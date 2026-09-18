@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#123b63" />
+    <meta name="description" content="Pesquise e compare ofertas válidas dos supermercados de Novo Hamburgo." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon-192.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>Busca Preço NH</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Busca Preço NH — página inicial">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.2"/><path d="m15.2 15.2 5 5"/></svg>
+        </span>
+        <span><strong>Busca Preço</strong><small>NH</small></span>
+      </a>
+      <button class="install-button" id="install-button" type="button">Instalar app</button>
+    </header>
+
+    <main id="top">
+      <section class="search-panel">
+        <label class="search-box" for="search-input">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.2"/><path d="m15.2 15.2 5 5"/></svg>
+          <input aria-label="Pesquisar produtos" id="search-input" type="search" placeholder="Busque arroz, leite, carne..." autocomplete="off" />
+          <button id="clear-search" type="button" aria-label="Limpar busca" hidden>×</button>
+        </label>
+
+        <div class="filter-row">
+          <label>
+            <span>Bairro</span>
+            <select id="neighborhood-filter">
+              <option value="all">Todos os bairros</option>
+              <option value="Canudos">Canudos</option>
+              <option value="Centro">Centro</option>
+              <option value="Santo Afonso">Santo Afonso</option>
+            </select>
+          </label>
+          <label id="sort-label">
+            <span>Ordenar</span>
+            <select id="sort-filter">
+              <option value="price">Menor preço</option>
+              <option value="unit">Menor preço por unidade</option>
+              <option value="recent">Ofertas mais recentes</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <nav class="category-scroll" aria-label="Categorias">
+        <button class="category active" data-category="all">Todas</button>
+        <button class="category" data-category="Mercearia">Mercearia</button>
+        <button class="category" data-category="Bebidas">Bebidas</button>
+        <button class="category" data-category="Limpeza">Limpeza</button>
+        <button class="category" data-category="Higiene">Higiene</button>
+      </nav>
+
+      <section class="content-section offers-section" aria-labelledby="offers-title">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">RESULTADOS DEMONSTRATIVOS</span>
+            <h2 id="offers-title">Ofertas encontradas</h2>
+          </div>
+          <span class="result-count" id="result-count"></span>
+        </div>
+        <div class="offer-grid" id="offer-grid"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <strong>Nenhuma oferta encontrada</strong>
+          <p>Tente outro produto, categoria ou bairro.</p>
+        </div>
+      </section>
+
+      <section class="flyer-list" id="flyer-list" aria-label="Encartes dos supermercados"></section>
+    </main>
+
+    <footer>
+      <strong>Busca Preço NH</strong>
+      <span>Ofertas claras para escolhas melhores.</span>
+      <small>Protótipo inicial — os valores demonstrativos serão substituídos pelos encartes oficiais.</small>
+    </footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
