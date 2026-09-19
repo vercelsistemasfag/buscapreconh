@@ -1,4 +1,4 @@
-const CACHE = 'busca-preco-nh-v4'
+const CACHE = 'busca-preco-nh-v5-zoom'
 const SHELL = ['/', '/style.css', '/assets/busca-preco-logo.png', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()})
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()})

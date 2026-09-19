@@ -26,8 +26,79 @@ const stores = [{
   logo:'/assets/super-mariani.png', flyer:'/assets/encarte-super-mariani.jpg'
 }]
 let favorites = []
+let activeFlyerZoom = null
+const zoomLevels = [100, 125, 150, 175, 200, 250, 300]
+function setupFlyerZoom(card) {
+  const image = card.querySelector('.full-flyer')
+  const viewport = document.createElement('div')
+  viewport.className = 'flyer-viewport'
+  viewport.tabIndex = 0
+  viewport.setAttribute('role', 'region')
+  viewport.setAttribute('aria-label', 'Encarte ampliável; use as setas para navegar')
+  image.before(viewport)
+  viewport.append(image)
+  const dock = document.createElement('div')
+  dock.className = 'flyer-zoom-dock'
+  dock.innerHTML = `<div class="flyer-zoom" role="group" aria-label="Zoom do encarte">
+    <button type="button" data-zoom-minus aria-label="Diminuir zoom">−</button>
+    <label>Zoom <select aria-label="Ampliação do encarte">${zoomLevels.map(value => `<option value="${value}">${value}%</option>`).join('')}</select></label>
+    <button type="button" data-zoom-plus aria-label="Aumentar zoom">+</button>
+    <button type="button" data-zoom-reset aria-label="Voltar ao tamanho original, 100%" hidden>100%</button>
+  </div>`
+  card.append(dock)
+  const control = dock.firstElementChild
+  const select = control.querySelector('select')
+  const minus = control.querySelector('[data-zoom-minus]')
+  const plus = control.querySelector('[data-zoom-plus]')
+  const reset = control.querySelector('[data-zoom-reset]')
+  let level = 100
+  const state = { card, control, setZoom }
+  function setZoom(value, navigate = true) {
+    if (!zoomLevels.includes(value)) return
+    const starting = level === 100 && value > 100
+    if (value > 100 && activeFlyerZoom && activeFlyerZoom !== state) activeFlyerZoom.setZoom(100, false)
+    const ratio = value / level
+    level = value
+    image.style.width = `${level}%`
+    viewport.scrollLeft = level === 100 ? 0 : viewport.scrollLeft * ratio
+    select.value = String(level)
+    minus.disabled = level === 100
+    plus.disabled = level === 300
+    reset.hidden = level === 100
+    control.classList.toggle('is-floating', level > 100)
+    activeFlyerZoom = level > 100 ? state : null
+    if (navigate && starting) viewport.scrollIntoView({ block: 'start', behavior: 'instant' })
+    if (navigate && level === 100) {
+      select.focus({ preventScroll: true })
+      control.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+    }
+    updateFloatingZoom()
+  }
+  select.addEventListener('change', () => setZoom(Number(select.value)))
+  minus.addEventListener('click', () => setZoom(zoomLevels[Math.max(0, zoomLevels.indexOf(level) - 1)]))
+  plus.addEventListener('click', () => setZoom(zoomLevels[Math.min(zoomLevels.length - 1, zoomLevels.indexOf(level) + 1)]))
+  reset.addEventListener('click', () => setZoom(100))
+  setZoom(100, false)
+}
+function updateFloatingZoom() {
+  if (!activeFlyerZoom) return
+  const { card, control } = activeFlyerZoom
+  const rect = card.getBoundingClientRect()
+  control.classList.toggle('is-floating', !document.querySelector('#flyer-list').hidden && rect.bottom > 0 && rect.top < window.innerHeight)
+}
+let zoomScrollPending = false
+window.addEventListener('scroll', () => {
+  if (zoomScrollPending || !activeFlyerZoom) return
+  zoomScrollPending = true
+  requestAnimationFrame(() => { zoomScrollPending = false; updateFloatingZoom() })
+}, { passive: true })
+window.addEventListener('resize', updateFloatingZoom)
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && activeFlyerZoom) activeFlyerZoom.setZoom(100)
+})
 try { favorites = JSON.parse(localStorage.getItem('buscaPrecoFavorites') || '[]'); if (!Array.isArray(favorites)) favorites=[] } catch {}
 function renderFlyers(){
+  activeFlyerZoom = null
   const list = document.querySelector('#flyer-list')
   const visible = stores.filter(s=>neighborhood.value==='all'||s.neighborhood===neighborhood.value)
     .sort((a,b)=>Number(favorites.includes(b.id))-Number(favorites.includes(a.id)))
@@ -45,6 +116,7 @@ function renderFlyers(){
         <button data-favorite="${s.id}" aria-pressed="${favorites.includes(s.id)}">${favorites.includes(s.id)?'★ Favoritada':'☆ Favoritar loja'}</button>
       </div>
     </article>`).join('') : '<div class="empty-state"><strong>Nenhum encarte neste bairro</strong><p>Escolha todos os bairros para ver os encartes disponíveis.</p></div>'
+  list.querySelectorAll('.flyer-card').forEach(setupFlyerZoom)
 }
 document.querySelector('#flyer-list').addEventListener('click', async event=>{
   const button=event.target.closest('button')
@@ -66,6 +138,7 @@ document.querySelector('#flyer-list').addEventListener('click', async event=>{
   }
 })
 function render(){
+  if (activeFlyerZoom) activeFlyerZoom.setZoom(100, false)
   const term = normalize(search.value.trim())
   document.querySelector('.category-scroll').hidden = !term
   document.querySelector('.offers-section').hidden = !term
