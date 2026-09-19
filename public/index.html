@@ -13,13 +13,22 @@
         box-sizing: border-box;
         width: calc(100% - 20px);
         max-width: 1080px;
-        margin: 10px auto 4px;
+        margin: 10px auto 0;
       }
       .flyer-intro-art {
         display: block;
         width: 100%;
         height: auto;
+        aspect-ratio: 2183 / 720;
+        object-fit: contain;
         border-radius: 16px;
+      }
+      #content-scroll > #flyer-list {
+        margin-top: 6px;
+        padding-top: 0;
+      }
+      #flyer-list > :first-child {
+        margin-top: 0;
       }
     </style>
     <title>Busca Preço NH</title>
@@ -73,7 +82,7 @@
 
       <div class="content-scroll" id="content-scroll">
         <section class="flyer-intro" aria-label="Encontre encartes em Novo Hamburgo">
-          <img class="flyer-intro-art" src="/assets/banner-encartes-aprovado.png" width="2183" height="720" alt="Os melhores encartes de Novo Hamburgo, em um só lugar. PESQUISE E COMPRE PERTO DE CASA PAGANDO O MENOR PREÇO!" decoding="async" />
+          <img class="flyer-intro-art" src="/assets/banner-encartes-moderno.png" width="2183" height="720" alt="Os melhores encartes de Novo Hamburgo, em um só lugar. PESQUISE E COMPRE PERTO DE CASA PAGANDO O MENOR PREÇO!" decoding="async" />
         </section>
 
       <section class="content-section offers-section" aria-labelledby="offers-title">
