@@ -4,7 +4,7 @@
   "description": "Compare ofertas válidas nos mercados de Novo Hamburgo.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f6f8f4",
+  "background_color": "#023926",
   "theme_color": "#023926",
   "lang": "pt-BR",
   "icons": [

@@ -1,4 +1,4 @@
-const CACHE = 'busca-preco-nh-v19-pwa-icon'
+const CACHE = 'busca-preco-nh-v19-pwa-icon-green-splash'
 const SHELL = ['/icons/icon-192.png?v=19', '/icons/icon-512.png?v=19', '/', '/style.css', '/assets/banner-encartes-moderno.png', '/assets/busca-preco-logo.svg', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()})
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()})
