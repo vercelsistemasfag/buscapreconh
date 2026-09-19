@@ -40,18 +40,25 @@ footer{border-top:3px solid var(--accent)}
 footer small{color:#b9cebf}
 @media(max-width:390px){.brand-logo{width:96px;height:96px}}
 
-/* Header and search stay in the document instead of following the scroll. */
-.topbar,.search-panel{position:static;top:auto}
-.flyer-card{scroll-margin-top:16px}
-.flyer-viewport{width:100%;overflow:auto;scroll-margin-top:16px;overscroll-behavior-x:contain}
+/* Fixed page shell: only the flyer area (or search results) scrolls. */
+html,body{height:100%;overflow:hidden}
+body{height:100dvh;min-height:0;display:flex;flex-direction:column}
+.topbar{position:relative;top:auto;flex:0 0 auto}
+main{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidden}
+.search-panel,.category-scroll{position:relative;top:auto;flex:0 0 auto;width:100%}
+.flyer-list{flex:1 1 auto;min-height:0;width:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-gutter:stable}
+.flyer-card{flex:0 0 auto;scroll-margin-top:12px}
+.offers-section{flex:1 1 auto;min-height:0;width:100%;overflow-y:auto;overscroll-behavior-y:contain}
+body>footer{flex:0 0 auto;padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:3px}
+body>footer strong{font-size:.85rem}
+body>footer span{font-size:.72rem}
+body>footer small{margin-top:2px}
+.flyer-viewport{width:100%;overflow:auto;scroll-margin-top:12px;overscroll-behavior-x:contain}
 .flyer-viewport .full-flyer{max-width:none;height:auto}
 .flyer-viewport:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-.flyer-zoom-dock{display:flex;justify-content:flex-end;min-height:76px;padding:8px 12px 16px}
-.flyer-zoom{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--green)}
-.flyer-zoom label{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700}
-.flyer-zoom select{min-height:44px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--green);font:inherit;padding:0 4px}
-.flyer-zoom button{min-width:44px;min-height:44px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--accent-soft);color:var(--green);font-weight:800;cursor:pointer}
-.flyer-zoom button:disabled{opacity:.4;cursor:default}
-.flyer-zoom select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.flyer-zoom.is-floating{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:45;max-width:calc(100vw - 24px);border-color:var(--accent);box-shadow:0 6px 28px #01291c40}
-body:has(.flyer-zoom.is-floating) .toast{bottom:calc(104px + env(safe-area-inset-bottom))}
+.flyer-zoom-dock{display:flex;justify-content:flex-end;min-height:52px;padding:0 10px 8px}
+.flyer-zoom{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fffffff5;color:var(--green)}
+.flyer-zoom select{width:72px;height:42px;border:0;border-radius:8px;background:transparent;color:var(--green);font-size:12px;padding:0 5px;cursor:pointer}
+.flyer-zoom select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.flyer-zoom.is-floating{position:fixed;z-index:45;box-shadow:0 2px 10px #01291c26}
+@media(max-height:600px){.topbar{min-height:56px;padding-top:4px;padding-bottom:4px}.brand-logo{width:48px;height:48px}.search-panel{padding-top:6px;padding-bottom:6px}.search-box{min-height:42px}.neighborhood-box select{height:38px}body>footer{padding-top:5px;padding-bottom:5px}}

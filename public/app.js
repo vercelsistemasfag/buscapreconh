@@ -40,17 +40,11 @@ function setupFlyerZoom(card) {
   const dock = document.createElement('div')
   dock.className = 'flyer-zoom-dock'
   dock.innerHTML = `<div class="flyer-zoom" role="group" aria-label="Zoom do encarte">
-    <button type="button" data-zoom-minus aria-label="Diminuir zoom">−</button>
-    <label>Zoom <select aria-label="Ampliação do encarte">${zoomLevels.map(value => `<option value="${value}">${value}%</option>`).join('')}</select></label>
-    <button type="button" data-zoom-plus aria-label="Aumentar zoom">+</button>
-    <button type="button" data-zoom-reset aria-label="Voltar ao tamanho original, 100%" hidden>100%</button>
+    <select aria-label="Zoom do encarte; selecione 100% para restaurar">${zoomLevels.map(value => `<option value="${value}">${value}%</option>`).join('')}</select>
   </div>`
   card.append(dock)
   const control = dock.firstElementChild
   const select = control.querySelector('select')
-  const minus = control.querySelector('[data-zoom-minus]')
-  const plus = control.querySelector('[data-zoom-plus]')
-  const reset = control.querySelector('[data-zoom-reset]')
   let level = 100
   const state = { card, control, setZoom }
   function setZoom(value, navigate = true) {
@@ -62,9 +56,6 @@ function setupFlyerZoom(card) {
     image.style.width = `${level}%`
     viewport.scrollLeft = level === 100 ? 0 : viewport.scrollLeft * ratio
     select.value = String(level)
-    minus.disabled = level === 100
-    plus.disabled = level === 300
-    reset.hidden = level === 100
     control.classList.toggle('is-floating', level > 100)
     activeFlyerZoom = level > 100 ? state : null
     if (navigate && starting) viewport.scrollIntoView({ block: 'start', behavior: 'instant' })
@@ -75,19 +66,20 @@ function setupFlyerZoom(card) {
     updateFloatingZoom()
   }
   select.addEventListener('change', () => setZoom(Number(select.value)))
-  minus.addEventListener('click', () => setZoom(zoomLevels[Math.max(0, zoomLevels.indexOf(level) - 1)]))
-  plus.addEventListener('click', () => setZoom(zoomLevels[Math.min(zoomLevels.length - 1, zoomLevels.indexOf(level) + 1)]))
-  reset.addEventListener('click', () => setZoom(100))
   setZoom(100, false)
 }
 function updateFloatingZoom() {
   if (!activeFlyerZoom) return
   const { card, control } = activeFlyerZoom
   const rect = card.getBoundingClientRect()
-  control.classList.toggle('is-floating', !document.querySelector('#flyer-list').hidden && rect.bottom > 0 && rect.top < window.innerHeight)
+  const list = document.querySelector('#flyer-list')
+  const bounds = list.getBoundingClientRect()
+  control.classList.toggle('is-floating', !list.hidden && rect.bottom > bounds.top && rect.top < bounds.bottom)
+  control.style.right = `${Math.max(12, window.innerWidth - bounds.right + 12)}px`
+  control.style.bottom = `${Math.max(12, window.innerHeight - bounds.bottom + 12)}px`
 }
 let zoomScrollPending = false
-window.addEventListener('scroll', () => {
+document.querySelector('#flyer-list').addEventListener('scroll', () => {
   if (zoomScrollPending || !activeFlyerZoom) return
   zoomScrollPending = true
   requestAnimationFrame(() => { zoomScrollPending = false; updateFloatingZoom() })
