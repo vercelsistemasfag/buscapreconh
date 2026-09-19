@@ -8,6 +8,36 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/icons/icon-192.png" />
     <link rel="stylesheet" href="/style.css" />
+    <style>
+      .flyer-intro {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 18px 20px 14px;
+        text-align: center;
+        color: #bd4c00;
+      }
+      .flyer-intro .flyer-intro-title {
+        margin: 0;
+        color: inherit;
+        font-family: inherit;
+        font-size: clamp(17px, 2.2vw, 21px);
+        font-weight: 600;
+        line-height: 1.35;
+        text-wrap: balance;
+      }
+      .flyer-intro .flyer-intro-subtitle {
+        max-width: 650px;
+        margin: 8px auto 0;
+        color: inherit;
+        font-family: inherit;
+        font-size: clamp(12px, 1.6vw, 14px);
+        font-weight: 500;
+        line-height: 1.45;
+        text-wrap: balance;
+      }
+    </style>
     <title>Busca Preço NH</title>
   </head>
   <body>
@@ -58,6 +88,11 @@
       </nav>
 
       <div class="content-scroll" id="content-scroll">
+        <section class="flyer-intro" aria-labelledby="flyer-intro-title">
+          <h1 class="flyer-intro-title" id="flyer-intro-title">Os melhores encartes de Novo Hamburgo, em um só lugar.</h1>
+          <p class="flyer-intro-subtitle">PESQUISE E COMPRE PERTO DE CASA PAGANDO O MENOR PREÇO!</p>
+        </section>
+
       <section class="content-section offers-section" aria-labelledby="offers-title">
         <div class="section-heading">
           <div>
