@@ -29,16 +29,18 @@
           <button id="clear-search" type="button" aria-label="Limpar busca" hidden>×</button>
         </label>
 
-        <div class="filter-row">
-          <label>
-            <span>Bairro</span>
-            <select id="neighborhood-filter">
-              <option value="all">Todos os bairros</option>
-              <option value="Canudos">Canudos</option>
-              <option value="Centro">Centro</option>
-              <option value="Santo Afonso">Santo Afonso</option>
-            </select>
-          </label>
+        <label class="search-box neighborhood-box" for="neighborhood-filter">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <select id="neighborhood-filter" aria-label="Selecione o Bairro">
+            <option value="all" selected disabled hidden>Selecione o Bairro</option>
+            <option value="all">Todos</option>
+            <option value="Centro">Centro</option>
+            <option value="Canudos">Canudos</option>
+            <option value="Santo Afonso">Santo Afonso</option>
+          </select>
+        </label>
+
+        <div class="filter-row" id="sort-row" hidden>
           <label id="sort-label">
             <span>Ordenar</span>
             <select id="sort-filter">

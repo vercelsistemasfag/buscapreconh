@@ -69,7 +69,7 @@ function render(){
   const term = normalize(search.value.trim())
   document.querySelector('.category-scroll').hidden = !term
   document.querySelector('.offers-section').hidden = !term
-  document.querySelector('#sort-label').hidden = !term
+  document.querySelector('#sort-row').hidden = !term
   document.querySelector('#flyer-list').hidden = !!term
   if (!term) { renderFlyers(); clearSearch.hidden = true; return }
   let filtered = offers.filter(item => {
