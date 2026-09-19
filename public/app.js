@@ -44,7 +44,7 @@ function setupFlyerZoom(card) {
     <select aria-label="Zoom do encarte; selecione 100% para restaurar">${zoomLevels.map(value => `<option value="${value}">${value}%</option>`).join('')}</select>
     <button type="button" data-zoom-plus aria-label="Aumentar zoom">+</button>
   </div>`
-  card.append(dock)
+  card.querySelector('.flyer-actions').before(dock)
   const control = dock.firstElementChild
   const select = control.querySelector('select')
   const minus = control.querySelector('[data-zoom-minus]')

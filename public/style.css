@@ -44,7 +44,7 @@ footer small{color:#b9cebf}
 html,body{height:100%;overflow:hidden}
 body{height:100dvh;min-height:0;display:flex;flex-direction:column}
 .topbar{position:relative;top:auto;flex:0 0 auto;padding-top:9px;padding-bottom:9px}
-.brand-logo{width:101px;height:101px}
+.brand-logo{width:101px;height:101px;transform:scale(1.15);transform-origin:left center}
 @media(max-width:390px){.brand-logo{width:86px;height:86px}}
 .search-panel{padding:10px 16px}
 .search-box{min-height:44px}
@@ -59,12 +59,12 @@ main{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidd
 .flyer-viewport{width:100%;overflow:auto;scroll-margin-top:12px;overscroll-behavior-x:contain}
 .flyer-viewport .full-flyer{max-width:none;height:auto}
 .flyer-viewport:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-.flyer-zoom-dock{display:flex;justify-content:flex-end;min-height:52px;padding:0 10px 8px}
+.flyer-zoom-dock{display:flex;justify-content:flex-end;min-height:46.8px;padding:7.2px 9px 0}
 .flyer-zoom{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fffffff5;color:var(--green)}
-.flyer-zoom button{width:36px;height:42px;padding:0;border:0;background:transparent;color:var(--green);font-size:18px;cursor:pointer}
+.flyer-zoom button{width:32.4px;height:37.8px;padding:0;border:0;background:transparent;color:var(--green);font-size:16.2px;cursor:pointer}
 .flyer-zoom button:disabled{opacity:.35;cursor:default}
 .flyer-zoom button:hover:not(:disabled){background:var(--accent-soft)}
-.flyer-zoom select{width:64px;height:42px;border:0;border-radius:8px;background:transparent;color:var(--green);font-size:12px;padding:0 5px;cursor:pointer}
+.flyer-zoom select{width:57.6px;height:37.8px;border:0;border-radius:8px;background:transparent;color:var(--green);font-size:10.8px;padding:0 4.5px;cursor:pointer}
 .flyer-zoom select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .flyer-zoom.is-floating{position:fixed;z-index:45;box-shadow:0 2px 10px #01291c26}
 @media(max-height:600px){.topbar{min-height:51px;padding-top:4px;padding-bottom:4px}.brand-logo{width:43px;height:43px}.search-panel{padding-top:6px;padding-bottom:6px}.search-box{min-height:42px}.neighborhood-box select{height:38px}}
