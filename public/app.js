@@ -21,11 +21,8 @@ let activeCategory = 'all'
 const money = value => value.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})
 const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
 
-const stores = [{
-  id:'super-mariani', name:'Super Mariani', neighborhood:'Canudos',
-  logo:'/assets/super-mariani.png', flyer:'/assets/encarte-super-mariani.jpg'
-}]
-stores.push({id:'rede-unisuper',name:'Rede Unisuper',validUntil:'2026-09-20',pages:[1,2,3,4].map(n=>`/encartes/unisuper/pagina-0${n}.jpg`),branches:[{neighborhood:'Pátria Nova',address:'Rua Primeiro de Março, 2131, Pátria Nova - Novo Hamburgo'},{neighborhood:'Rondônia',address:'Rua Guilherme Growermann, 515, Rondônia - Novo Hamburgo'}]})
+const stores = []
+stores.push({id:'rede-unisuper',name:'Rede Unisuper',logo:'/assets/unisuper-logo.png',validUntil:'2026-09-20',pages:[1,2,3,4].map(n=>`/encartes/unisuper/pagina-0${n}.jpg`),branches:[{neighborhood:'Pátria Nova',address:'Rua Primeiro de Março, 2131, Pátria Nova - Novo Hamburgo'},{neighborhood:'Rondônia',address:'Rua Guilherme Growermann, 515, Rondônia - Novo Hamburgo'}]})
 for(const name of ['Pátria Nova','Rondônia']){if(![...neighborhood.options].some(o=>o.value===name)){const option=document.createElement('option');option.value=name;option.textContent=name;neighborhood.append(option)}}
 let favorites = []
 let activeFlyerZoom = null
