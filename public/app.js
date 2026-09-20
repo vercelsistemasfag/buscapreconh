@@ -46,16 +46,11 @@ function setupFlyerZoom(card) {
   const minus=control.querySelector('[data-zoom-minus]'),plus=control.querySelector('[data-zoom-plus]'),reset=control.querySelector('[data-zoom-reset]')
   let level=100
   const state={card,viewport,control,setZoom};card.flyerZoomState=state
-  function fitViewer(){
-    if(image.naturalWidth&&viewport.clientWidth)viewport.style.height=(viewport.clientWidth*image.naturalHeight/image.naturalWidth)+'px'
-  }
   function setZoom(value){
     if(!zoomLevels.includes(value))return
     if(value>100&&activeFlyerZoom&&activeFlyerZoom!==state)activeFlyerZoom.setZoom(100,false)
-    fitViewer()
     const ratio=value/level;level=value;image.style.width=`${level}%`
     viewport.scrollLeft=level===100?0:viewport.scrollLeft*ratio
-    viewport.scrollTop=level===100?0:viewport.scrollTop*ratio
     minus.disabled=level===100;plus.disabled=level===300
     control.setAttribute('aria-label',`Zoom do encarte: ${level}%`)
     reset.title=`Zoom atual: ${level}%. Voltar para 100%`
@@ -66,18 +61,11 @@ function setupFlyerZoom(card) {
   plus.addEventListener('click',()=>setZoom(zoomLevels[Math.min(zoomLevels.length-1,zoomLevels.indexOf(level)+1)]))
   reset.addEventListener('click',()=>setZoom(100))
   card.resetFlyerZoom=()=>setZoom(100)
-  image.addEventListener('load',fitViewer)
   setZoom(100)
 }
 function updateFloatingZoom() {
   // Compatibility with existing render(): controls are now attached to each viewer.
 }
-window.addEventListener('resize',()=>{
-  document.querySelectorAll('.flyer-viewer .flyer-viewport').forEach(viewport=>{
-    const image=viewport.querySelector('img')
-    if(image?.naturalWidth&&viewport.clientWidth)viewport.style.height=(viewport.clientWidth*image.naturalHeight/image.naturalWidth)+'px'
-  })
-})
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&activeFlyerZoom)activeFlyerZoom.setZoom(100)
 })

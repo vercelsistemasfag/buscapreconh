@@ -14,3 +14,18 @@
 .flyer-viewer .viewer-zoom button:disabled{opacity:.35}
 .flyer-viewer button:focus-visible{outline:3px solid #ff6600;outline-offset:-3px}
 .flyer-viewer button:hover:not(:disabled){background:rgba(35,38,42,.65)}
+
+/* rolagem-natural-v4 */
+.flyer-viewer .flyer-viewport {
+  height: auto !important;
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: auto;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+.flyer-viewer .full-flyer { touch-action: pan-x pan-y pinch-zoom; }
+.flyer-viewer .viewer-zoom {
+  transform: scale(.8);
+  transform-origin: bottom right;
+}
