@@ -98,7 +98,7 @@ function renderFlyers(){
       <header class="flyer-heading">
         ${s.logo?`<img src="${s.logo}" alt="Logotipo ${s.name}" />`:''}
         <div class="flyer-heading-details"><h2>${s.name}</h2><p>${s.branches?'Novo Hamburgo':s.neighborhood+' · Novo Hamburgo'}</p>
-        ${branch?`<div class="branch-selector" role="group" aria-label="Escolha a filial">${s.branches.map((b,i)=>`<button type="button" data-branch="${i}" aria-pressed="${state.branch===i}">Bairro ${b.neighborhood}</button>`).join('')}</div><p class="branch-address" aria-live="polite">${branch.address}</p>`:''}
+        ${branch?`<div class="branch-selector" role="group" aria-label="Escolha a filial">${s.branches.map((b,i)=>`<button type="button" data-branch="${i}" aria-pressed="${state.branch===i}">${b.neighborhood}</button>`).join('')}</div><p class="branch-address" aria-live="polite">${branch.address}</p>`:''}
         <span class="flyer-validity">${validityFor(s)}</span></div>
       </header>
       <img class="full-flyer" src="${pages[state.page]}" alt="Encarte ${s.name}, página ${state.page+1} de ${pages.length}" />
