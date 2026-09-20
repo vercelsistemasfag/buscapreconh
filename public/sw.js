@@ -1,5 +1,5 @@
-const CACHE = 'busca-preco-nh-v19-pwa-icon-green-splash-unisuper-v1-unisuper-logo-logo-branco-v2-zoom-flutuante-v2'
-const SHELL = ['/zoom-flutuante.css', '/assets/unisuper-logo-branco.png', '/unisuper.css', '/icons/icon-192.png?v=19', '/icons/icon-512.png?v=19', '/', '/style.css', '/assets/banner-encartes-moderno.png', '/assets/busca-preco-logo.svg', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
+const CACHE = 'busca-preco-nh-v19-pwa-icon-green-splash-unisuper-v1-unisuper-logo-logo-branco-v2-zoom-flutuante-v2-encarte-viewer-v3'
+const SHELL = ['/encarte-viewer.css', '/zoom-flutuante.css', '/assets/unisuper-logo-branco.png', '/unisuper.css', '/icons/icon-192.png?v=19', '/icons/icon-512.png?v=19', '/', '/style.css', '/assets/banner-encartes-moderno.png', '/assets/busca-preco-logo.svg', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()})
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()})
 self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;event.respondWith(fetch(event.request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));return response}).catch(()=>caches.match(event.request).then(response=>response||caches.match('/'))))})
