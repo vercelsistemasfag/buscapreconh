@@ -131,7 +131,7 @@ document.querySelector('#flyer-list').addEventListener('click', async event=>{
     showToast('O endereço desta loja será confirmado antes de disponibilizar a rota.')
   }else if(button.dataset.share){
     const branch=store.branches?.[state.branch]
-    const data={title:store.name+' — Busca Preço NH',text:'Veja o encarte de '+store.name+(branch?' · '+branch.address:''),url:location.origin+'/#'+store.id}
+    const data={title:store.name+' — Meu Busca Preço',text:'Veja o encarte de '+store.name+(branch?' · '+branch.address:''),url:location.origin+'/#'+store.id}
     try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(data.url);showToast('Link do encarte copiado.')}}catch(e){if(e.name!=='AbortError')showToast('Não foi possível compartilhar. Tente novamente.')}
   }
 })
