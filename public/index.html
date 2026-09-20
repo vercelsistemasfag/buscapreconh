@@ -64,25 +64,10 @@
           </select>
         </label>
 
-        <div class="filter-row" id="sort-row" hidden>
-          <label id="sort-label">
-            <span>Ordenar</span>
-            <select id="sort-filter">
-              <option value="price">Menor preço</option>
-              <option value="unit">Menor preço por unidade</option>
-              <option value="recent">Ofertas mais recentes</option>
-            </select>
-          </label>
-        </div>
+        
       </section>
 
-      <nav class="category-scroll" aria-label="Categorias">
-        <button class="category active" data-category="all">Todas</button>
-        <button class="category" data-category="Mercearia">Mercearia</button>
-        <button class="category" data-category="Bebidas">Bebidas</button>
-        <button class="category" data-category="Limpeza">Limpeza</button>
-        <button class="category" data-category="Higiene">Higiene</button>
-      </nav>
+      <h2 id="search-order-title" class="search-order-title" hidden>Menores preços primeiro</h2>
 
       <div class="content-scroll" id="content-scroll">
         <section class="flyer-intro" aria-label="Encontre encartes em Novo Hamburgo">
@@ -100,7 +85,7 @@
         <div class="offer-grid" id="offer-grid"></div>
         <div class="empty-state" id="empty-state" hidden>
           <strong>Nenhuma oferta encontrada</strong>
-          <p>Tente outro produto, categoria ou bairro.</p>
+          <p>Tente outro produto ou bairro.</p>
         </div>
       </section>
 

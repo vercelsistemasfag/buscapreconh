@@ -1,4 +1,4 @@
-const CACHE = 'busca-preco-nh-v19-pwa-icon-green-splash-unisuper-v1-unisuper-logo-logo-branco-v2-zoom-flutuante-v2-encarte-viewer-v3-rolagem-natural-v4-cabecalho-compacto-v3-busca-real-v1'
+const CACHE = 'busca-preco-nh-v19-pwa-icon-green-splash-unisuper-v1-unisuper-logo-logo-branco-v2-zoom-flutuante-v2-encarte-viewer-v3-rolagem-natural-v4-cabecalho-compacto-v3-busca-real-v1-pesquisa-limpa-v1'
 const SHELL = ['/busca-real.css', '/unisuper-produtos.js', '/encarte-viewer.css', '/zoom-flutuante.css', '/assets/unisuper-logo-branco.png', '/unisuper.css', '/icons/icon-192.png?v=19', '/icons/icon-512.png?v=19', '/', '/style.css', '/assets/banner-encartes-moderno.png', '/assets/busca-preco-logo.svg', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()})
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()})
