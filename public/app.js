@@ -28,73 +28,81 @@ let favorites = []
 let activeFlyerZoom = null
 const zoomLevels = [100, 125, 150, 175, 200, 250, 300]
 function setupFlyerZoom(card) {
-  const image = card.querySelector('.full-flyer')
-  const viewport = document.createElement('div')
-  viewport.className = 'flyer-viewport'
-  viewport.tabIndex = 0
-  viewport.setAttribute('role', 'region')
-  viewport.setAttribute('aria-label', 'Encarte ampliável; use as setas para navegar')
-  image.before(viewport)
-  viewport.append(image)
-  const dock = document.createElement('div')
-  dock.className = 'flyer-zoom-dock'
-  dock.innerHTML = `<div class="flyer-zoom" role="group" aria-label="Zoom do encarte">
+  const image=card.querySelector('.full-flyer')
+  const viewport=document.createElement('div')
+  viewport.className='flyer-viewport';viewport.tabIndex=0
+  viewport.setAttribute('role','region')
+  viewport.setAttribute('aria-label','Encarte ampliável; use as setas para deslocar a imagem')
+  image.before(viewport);viewport.append(image)
+  const dock=document.createElement('div');dock.className='flyer-zoom-dock'
+  dock.innerHTML=`<div class="flyer-zoom is-floating" role="group" aria-label="Zoom do encarte" hidden>
     <button type="button" data-zoom-minus aria-label="Diminuir zoom">−</button>
-    <select aria-label="Zoom do encarte; selecione 100% para restaurar">${zoomLevels.map(value => `<option value="${value}">${value}%</option>`).join('')}</select>
+    <button type="button" data-zoom-reset aria-label="Voltar para 100%">100%</button>
     <button type="button" data-zoom-plus aria-label="Aumentar zoom">+</button>
   </div>`
   card.querySelector('.flyer-actions').before(dock)
-  const control = dock.firstElementChild
-  const select = control.querySelector('select')
-  const minus = control.querySelector('[data-zoom-minus]')
-  const plus = control.querySelector('[data-zoom-plus]')
-  let level = 100
-  const state = { card, control, setZoom }
-  function setZoom(value, navigate = true) {
-    if (!zoomLevels.includes(value)) return
-    const starting = level === 100 && value > 100
-    if (value > 100 && activeFlyerZoom && activeFlyerZoom !== state) activeFlyerZoom.setZoom(100, false)
-    const ratio = value / level
-    level = value
-    image.style.width = `${level}%`
-    viewport.scrollLeft = level === 100 ? 0 : viewport.scrollLeft * ratio
-    select.value = String(level)
-    minus.disabled = level === 100
-    plus.disabled = level === 300
-    control.classList.toggle('is-floating', level > 100)
-    activeFlyerZoom = level > 100 ? state : null
-    if (navigate && starting) viewport.scrollIntoView({ block: 'start', behavior: 'instant' })
-    if (navigate && level === 100) {
-      select.focus({ preventScroll: true })
-      control.scrollIntoView({ block: 'nearest', behavior: 'instant' })
-    }
+  const control=dock.firstElementChild
+  const minus=control.querySelector('[data-zoom-minus]'),plus=control.querySelector('[data-zoom-plus]'),reset=control.querySelector('[data-zoom-reset]')
+  let level=100
+  const state={card,viewport,control,setZoom}
+  card.flyerZoomState=state
+  function setZoom(value,navigate=true){
+    if(!zoomLevels.includes(value))return
+    if(value>100 && activeFlyerZoom && activeFlyerZoom!==state)activeFlyerZoom.setZoom(100,false)
+    const scroller=document.querySelector('#content-scroll')
+    const offset=Math.max(0,scroller.getBoundingClientRect().top-viewport.getBoundingClientRect().top)
+    const ratio=value/level
+    level=value;image.style.width=`${level}%`
+    viewport.scrollLeft=level===100?0:viewport.scrollLeft*ratio
+    if(navigate && offset>0)scroller.scrollTop+=offset*(ratio-1)
+    minus.disabled=level===100;plus.disabled=level===300
+    control.setAttribute('aria-label',`Zoom do encarte: ${level}%`)
+    reset.title=`Zoom atual: ${level}%. Voltar para 100%`
+    if(level>100)activeFlyerZoom=state
+    else if(activeFlyerZoom===state)activeFlyerZoom=null
     updateFloatingZoom()
   }
-  select.addEventListener('change', () => setZoom(Number(select.value)))
-  minus.addEventListener('click', () => setZoom(zoomLevels[Math.max(0, zoomLevels.indexOf(level) - 1)]))
-  plus.addEventListener('click', () => setZoom(zoomLevels[Math.min(zoomLevels.length - 1, zoomLevels.indexOf(level) + 1)]))
-  card.resetFlyerZoom = () => setZoom(100, false)
-  setZoom(100, false)
+  minus.addEventListener('click',()=>setZoom(zoomLevels[Math.max(0,zoomLevels.indexOf(level)-1)]))
+  plus.addEventListener('click',()=>setZoom(zoomLevels[Math.min(zoomLevels.length-1,zoomLevels.indexOf(level)+1)]))
+  reset.addEventListener('click',()=>setZoom(100))
+  card.resetFlyerZoom=()=>setZoom(100,false)
+  image.addEventListener('load',updateFloatingZoom)
+  setZoom(100,false)
+  requestAnimationFrame(updateFloatingZoom)
 }
-function updateFloatingZoom() {
-  if (!activeFlyerZoom) return
-  const { card, control } = activeFlyerZoom
-  const rect = card.getBoundingClientRect()
-  const list = document.querySelector('#flyer-list')
-  const bounds = document.querySelector('#content-scroll').getBoundingClientRect()
-  control.classList.toggle('is-floating', !list.hidden && rect.bottom > bounds.top && rect.top < bounds.bottom)
-  control.style.right = `${Math.max(12, window.innerWidth - bounds.right + 12)}px`
-  control.style.bottom = `${Math.max(12, window.innerHeight - bounds.bottom + 12)}px`
+function updateFloatingZoom(){
+  const list=document.querySelector('#flyer-list'),scroller=document.querySelector('#content-scroll')
+  if(!list||!scroller)return
+  const bounds=scroller.getBoundingClientRect()
+  const screenBottom=window.visualViewport?window.visualViewport.offsetTop+window.visualViewport.height:window.innerHeight
+  const bottom=Math.min(bounds.bottom,screenBottom)
+  const top=Math.max(0,bounds.top)
+  let chosen=null,best=0
+  list.querySelectorAll('.flyer-card').forEach(card=>{
+    const state=card.flyerZoomState;if(!state)return
+    state.control.hidden=true
+    if(list.hidden || !card.isConnected)return
+    const rect=state.viewport.getBoundingClientRect()
+    const visible=Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))
+    if(visible>best){best=visible;chosen=state}
+  })
+  if(!chosen||best<40)return
+  chosen.control.hidden=false
+  chosen.control.style.right=`${Math.max(12,window.innerWidth-bounds.right+12)}px`
+  chosen.control.style.bottom=`calc(${Math.max(12,window.innerHeight-bottom+12)}px + env(safe-area-inset-bottom, 0px))`
 }
-let zoomScrollPending = false
-document.querySelector('#content-scroll').addEventListener('scroll', () => {
-  if (zoomScrollPending || !activeFlyerZoom) return
-  zoomScrollPending = true
-  requestAnimationFrame(() => { zoomScrollPending = false; updateFloatingZoom() })
-}, { passive: true })
-window.addEventListener('resize', updateFloatingZoom)
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && activeFlyerZoom) activeFlyerZoom.setZoom(100)
+let zoomScrollPending=false
+function scheduleFloatingZoom(){
+  if(zoomScrollPending)return
+  zoomScrollPending=true
+  requestAnimationFrame(()=>{zoomScrollPending=false;updateFloatingZoom()})
+}
+document.querySelector('#content-scroll').addEventListener('scroll',scheduleFloatingZoom,{passive:true})
+window.addEventListener('resize',scheduleFloatingZoom)
+window.visualViewport?.addEventListener('resize',scheduleFloatingZoom)
+window.visualViewport?.addEventListener('scroll',scheduleFloatingZoom)
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&activeFlyerZoom)activeFlyerZoom.setZoom(100)
 })
 try { favorites = JSON.parse(localStorage.getItem('buscaPrecoFavorites') || '[]'); if (!Array.isArray(favorites)) favorites=[] } catch {}
 const flyerState = new Map()
@@ -179,6 +187,7 @@ function render(){
   document.querySelector('.offers-section').hidden = !term
   document.querySelector('#sort-row').hidden = !term
   document.querySelector('#flyer-list').hidden = !!term
+  updateFloatingZoom()
   if (!term) { renderFlyers(); clearSearch.hidden = true; return }
   let filtered = offers.filter(item => {
     const text = normalize(`${item.name} ${item.brand} ${item.market}`)
