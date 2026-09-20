@@ -25,6 +25,8 @@ const stores = [{
   id:'super-mariani', name:'Super Mariani', neighborhood:'Canudos',
   logo:'/assets/super-mariani.png', flyer:'/assets/encarte-super-mariani.jpg'
 }]
+stores.push({id:'rede-unisuper',name:'Rede Unisuper',validUntil:'2026-09-20',pages:[1,2,3,4].map(n=>`/encartes/unisuper/pagina-0${n}.jpg`),branches:[{neighborhood:'Pátria Nova',address:'Rua Primeiro de Março, 2131, Pátria Nova - Novo Hamburgo'},{neighborhood:'Rondônia',address:'Rua Guilherme Growermann, 515, Rondônia - Novo Hamburgo'}]})
+for(const name of ['Pátria Nova','Rondônia']){if(![...neighborhood.options].some(o=>o.value===name)){const option=document.createElement('option');option.value=name;option.textContent=name;neighborhood.append(option)}}
 let favorites = []
 let activeFlyerZoom = null
 const zoomLevels = [100, 125, 150, 175, 200, 250, 300]
@@ -74,6 +76,7 @@ function setupFlyerZoom(card) {
   select.addEventListener('change', () => setZoom(Number(select.value)))
   minus.addEventListener('click', () => setZoom(zoomLevels[Math.max(0, zoomLevels.indexOf(level) - 1)]))
   plus.addEventListener('click', () => setZoom(zoomLevels[Math.min(zoomLevels.length - 1, zoomLevels.indexOf(level) + 1)]))
+  card.resetFlyerZoom = () => setZoom(100, false)
   setZoom(100, false)
 }
 function updateFloatingZoom() {
@@ -97,44 +100,79 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && activeFlyerZoom) activeFlyerZoom.setZoom(100)
 })
 try { favorites = JSON.parse(localStorage.getItem('buscaPrecoFavorites') || '[]'); if (!Array.isArray(favorites)) favorites=[] } catch {}
+const flyerState = new Map()
+function stateFor(store) {
+  if (!flyerState.has(store.id)) flyerState.set(store.id, {page:0, branch:0})
+  return flyerState.get(store.id)
+}
+function directionsFor(store) {
+  const branch=store.branches?.[stateFor(store).branch]
+  return branch ? 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(branch.address+', RS, Brasil') : ''
+}
+function validityFor(store) {
+  if (!store.validUntil) return 'Validade a confirmar · Encarte demonstrativo'
+  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'}).format(new Date())
+  return (today>store.validUntil?'Encerrado · ':'')+'Válido de 18 a 20/09/2026 · Enquanto durarem os estoques'
+}
 function renderFlyers(){
   activeFlyerZoom = null
-  const list = document.querySelector('#flyer-list')
-  const visible = stores.filter(s=>neighborhood.value==='all'||s.neighborhood===neighborhood.value)
+  const list=document.querySelector('#flyer-list')
+  const visible=stores.filter(s=>neighborhood.value==='all'||s.neighborhood===neighborhood.value||s.branches?.some(b=>b.neighborhood===neighborhood.value))
     .sort((a,b)=>Number(favorites.includes(b.id))-Number(favorites.includes(a.id)))
-  list.innerHTML = visible.length ? visible.map(s=>`
-    <article class="flyer-card" id="${s.id}">
+  list.innerHTML=visible.map(s=>{
+    const state=stateFor(s),pages=s.pages||[s.flyer]
+    const matching=s.branches?.findIndex(b=>b.neighborhood===neighborhood.value)
+    if(matching>=0)state.branch=matching
+    const branch=s.branches?.[state.branch]
+    return `<article class="flyer-card" id="${s.id}">
       <header class="flyer-heading">
-        <img src="${s.logo}" alt="Logotipo ${s.name}" />
-        <div><h2>${s.name}</h2><p>${s.neighborhood} · Novo Hamburgo</p>
-        <span class="flyer-validity">Validade a confirmar · Encarte demonstrativo</span></div>
+        ${s.logo?`<img src="${s.logo}" alt="Logotipo ${s.name}" />`:''}
+        <div class="flyer-heading-details"><h2>${s.name}</h2><p>${s.branches?'Novo Hamburgo':s.neighborhood+' · Novo Hamburgo'}</p>
+        ${branch?`<div class="branch-selector" role="group" aria-label="Escolha a filial">${s.branches.map((b,i)=>`<button type="button" data-branch="${i}" aria-pressed="${state.branch===i}">Bairro ${b.neighborhood}</button>`).join('')}</div><p class="branch-address" aria-live="polite">${branch.address}</p>`:''}
+        <span class="flyer-validity">${validityFor(s)}</span></div>
       </header>
-      <img class="full-flyer" src="${s.flyer}" alt="Encarte completo de ${s.name}" width="1242" height="1536" />
+      <img class="full-flyer" src="${pages[state.page]}" alt="Encarte ${s.name}, página ${state.page+1} de ${pages.length}" />
+      ${pages.length>1?`<nav class="flyer-pages" aria-label="Páginas do encarte"><button type="button" data-page-step="-1" aria-label="Página anterior" ${state.page===0?'disabled':''}>‹</button><span aria-live="polite">${state.page+1} de ${pages.length}</span><button type="button" data-page-step="1" aria-label="Próxima página" ${state.page===pages.length-1?'disabled':''}>›</button></nav>`:''}
       <div class="flyer-actions">
         <button data-share="${s.id}">Compartilhar</button>
-        <button data-directions="${s.id}">Como chegar</button>
+        ${branch?`<a class="flyer-directions" href="${directionsFor(s)}" target="_blank" rel="noopener noreferrer">Como chegar</a>`:`<button data-directions="${s.id}">Como chegar</button>`}
         <button data-favorite="${s.id}" aria-pressed="${favorites.includes(s.id)}">${favorites.includes(s.id)?'★ Favoritada':'☆ Favoritar loja'}</button>
-      </div>
-    </article>`).join('') : '<div class="empty-state"><strong>Nenhum encarte neste bairro</strong><p>Escolha todos os bairros para ver os encartes disponíveis.</p></div>'
+      </div></article>`
+  }).join('')||'<div class="empty-state"><strong>Nenhum encarte neste bairro</strong><p>Escolha todos os bairros para ver os encartes disponíveis.</p></div>'
   list.querySelectorAll('.flyer-card').forEach(setupFlyerZoom)
 }
 document.querySelector('#flyer-list').addEventListener('click', async event=>{
   const button=event.target.closest('button')
   if(!button)return
-  if(button.dataset.favorite){
-    const id=button.dataset.favorite
+  const card=button.closest('.flyer-card'),store=stores.find(s=>s.id===card?.id)
+  if(!store)return
+  const state=stateFor(store)
+  if(button.dataset.branch!==undefined){
+    state.branch=Number(button.dataset.branch)
+    card.querySelectorAll('[data-branch]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.branch)===state.branch)))
+    card.querySelector('.branch-address').textContent=store.branches[state.branch].address
+    card.querySelector('.flyer-directions').href=directionsFor(store)
+  }else if(button.dataset.pageStep){
+    const pages=store.pages||[store.flyer]
+    state.page=Math.max(0,Math.min(pages.length-1,state.page+Number(button.dataset.pageStep)))
+    card.resetFlyerZoom?.()
+    const image=card.querySelector('.full-flyer')
+    image.src=pages[state.page];image.alt=`Encarte ${store.name}, página ${state.page+1} de ${pages.length}`
+    card.querySelector('.flyer-pages span').textContent=`${state.page+1} de ${pages.length}`
+    card.querySelector('[data-page-step="-1"]').disabled=state.page===0
+    card.querySelector('[data-page-step="1"]').disabled=state.page===pages.length-1
+    card.querySelector('.flyer-viewport').scrollIntoView({block:'start',behavior:'instant'})
+  }else if(button.dataset.favorite){
+    const id=store.id
     favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id]
-    try { localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites)) } catch {}
-    renderFlyers()
-    document.querySelector('[data-favorite="'+id+'"]')?.focus({preventScroll:true})
-  } else if(button.dataset.directions){
+    try{localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites))}catch{}
+    renderFlyers();document.querySelector('[data-favorite="'+id+'"]')?.focus({preventScroll:true})
+  }else if(button.dataset.directions){
     showToast('O endereço desta loja será confirmado antes de disponibilizar a rota.')
-  } else if(button.dataset.share){
-    const data={title:'Super Mariani — Busca Preço NH',text:'Veja o encarte demonstrativo no Busca Preço NH.',url:location.origin+'/#'+button.dataset.share}
-    try {
-      if(navigator.share) await navigator.share(data)
-      else {await navigator.clipboard.writeText(data.url);showToast('Link do encarte copiado.')}
-    }catch(e){if(e.name!=='AbortError')showToast('Não foi possível compartilhar. Tente novamente.')}
+  }else if(button.dataset.share){
+    const branch=store.branches?.[state.branch]
+    const data={title:store.name+' — Busca Preço NH',text:'Veja o encarte de '+store.name+(branch?' · '+branch.address:''),url:location.origin+'/#'+store.id}
+    try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(data.url);showToast('Link do encarte copiado.')}}catch(e){if(e.name!=='AbortError')showToast('Não foi possível compartilhar. Tente novamente.')}
   }
 })
 function render(){
