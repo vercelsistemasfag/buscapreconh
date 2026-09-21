@@ -154,9 +154,15 @@ document.querySelector('#flyer-list').addEventListener('click', async event=>{
     // Page changes stay inside the viewer without scrolling the site.
   }else if(button.dataset.favorite){
     const id=store.id
-    favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id]
-    try{localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites))}catch{}
-    renderFlyers();document.querySelector('[data-favorite="'+id+'"]')?.focus({preventScroll:true})
+    const adding=!favorites.includes(id)
+    favorites=adding?[...favorites,id]:favorites.filter(x=>x!==id)
+    let saved=true
+    try{localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites))}catch{saved=false}
+    renderFlyers()
+    const favoriteButton=document.querySelector('[data-favorite="'+id+'"]')
+    favoriteButton?.focus({preventScroll:true})
+    if(adding)showFavoriteModal(favoriteButton,saved)
+    else showToast('Loja removida dos favoritos.')
   }else if(button.dataset.directions){
     showToast('O endereço desta loja será confirmado antes de disponibilizar a rota.')
   }else if(button.dataset.share){
@@ -241,3 +247,25 @@ function refreshFlyerDate(){
 setInterval(refreshFlyerDate,1000)
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFlyerDate()})
 window.addEventListener('pageshow',refreshFlyerDate)
+
+// favoritos-modal-v1
+let favoriteModalTimer
+function showFavoriteModal(trigger,saved=true){
+  let dialog=document.querySelector('#favorite-modal')
+  if(!dialog){
+    dialog=document.createElement('dialog')
+    dialog.id='favorite-modal'
+    dialog.setAttribute('aria-labelledby','favorite-modal-title')
+    dialog.setAttribute('aria-describedby','favorite-modal-message favorite-modal-notice')
+    dialog.innerHTML=`<button type="button" class="favorite-modal-close" aria-label="Fechar aviso">×</button><span class="favorite-modal-star" aria-hidden="true">★</span><h2 id="favorite-modal-title">Loja favoritada!</h2><p id="favorite-modal-message">As lojas favoritas aparecem primeiro na lista e você recebe uma notificação sempre que um novo encarte for adicionado.</p><p id="favorite-modal-notice">Avisos de novos encartes ainda não estão ativos nesta versão de teste.</p><p class="favorite-modal-storage" hidden>Não foi possível salvar neste aparelho. A seleção vale enquanto esta página estiver aberta.</p>`
+    document.body.append(dialog)
+    dialog.querySelector('button').addEventListener('click',()=>dialog.close())
+    dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}})
+    dialog.addEventListener('close',()=>{clearTimeout(favoriteModalTimer);if(dialog.returnFocus?.isConnected)dialog.returnFocus.focus({preventScroll:true})})
+  }
+  clearTimeout(favoriteModalTimer)
+  dialog.returnFocus=trigger
+  dialog.querySelector('.favorite-modal-storage').hidden=saved
+  if(!dialog.open)dialog.showModal()
+  favoriteModalTimer=setTimeout(()=>dialog.close(),7000)
+}
