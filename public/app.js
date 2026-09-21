@@ -14,6 +14,22 @@ const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
 const stores = []
 stores.push({id:'rede-unisuper',name:'Rede Unisuper',logo:'/assets/unisuper-logo-branco.png',validUntil:'2026-09-20',pages:[1,2,3,4].map(n=>`/encartes/unisuper/pagina-0${n}.jpg`),branches:[{neighborhood:'Pátria Nova',address:'Rua Primeiro de Março, 2131, Pátria Nova - Novo Hamburgo'},{neighborhood:'Rondônia',address:'Rua Guilherme Growermann, 515, Rondônia - Novo Hamburgo'}]})
 for(const name of ['Pátria Nova','Rondônia']){if(![...neighborhood.options].some(o=>o.value===name)){const option=document.createElement('option');option.value=name;option.textContent=name;neighborhood.append(option)}}
+// ofersul-card-v1
+stores.push({
+  id:'ofersul', name:'Ofersul Supermercados',
+  logo:'/assets/ofersul-logo.jpg',
+  validFrom:'2026-09-21', validUntil:'2026-09-21',
+  validityLabel:'Encarte de teste · Ofertas originalmente válidas em 21/09/2026',
+  pages:['/encartes/ofersul/pagina-01.jpg','/encartes/ofersul/pagina-02.jpg'],
+  branches:[{neighborhood:'Ouro Branco',address:'Rua Bento Gonçalves, 335, Ouro Branco - Novo Hamburgo'}]
+})
+const flyerDateToday=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'}).format(new Date())
+const flyerIsCurrent=(store,today=flyerDateToday())=>store.id==='ofersul'||!store.validFrom||(!store.validUntil?today>=store.validFrom:today>=store.validFrom&&today<=store.validUntil)
+for(const store of stores) for(const branch of store.branches||[]) {
+  if(![...neighborhood.options].some(option=>option.value===branch.neighborhood)) {
+    const option=document.createElement('option');option.value=branch.neighborhood;option.textContent=branch.neighborhood;neighborhood.append(option)
+  }
+}
 let favorites = []
 let activeFlyerZoom = null
 const zoomLevels = [100, 125, 150, 175, 200, 250, 300]
@@ -70,6 +86,7 @@ function directionsFor(store) {
   return branch ? 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(branch.address+', RS, Brasil') : ''
 }
 function validityFor(store) {
+  if(store.validityLabel)return store.validityLabel
   if (!store.validUntil) return 'Validade a confirmar · Encarte demonstrativo'
   const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'}).format(new Date())
   return (today>store.validUntil?'Encerrado · ':'')+'Válido de 18 a 20/09/2026 · Enquanto durarem os estoques'
@@ -77,7 +94,7 @@ function validityFor(store) {
 function renderFlyers(){
   activeFlyerZoom = null
   const list=document.querySelector('#flyer-list')
-  const visible=stores.filter(s=>neighborhood.value==='all'||s.neighborhood===neighborhood.value||s.branches?.some(b=>b.neighborhood===neighborhood.value))
+  const visible=stores.filter(s=>flyerIsCurrent(s)&&(neighborhood.value==='all'||s.neighborhood===neighborhood.value||s.branches?.some(b=>b.neighborhood===neighborhood.value)))
     .sort((a,b)=>Number(favorites.includes(b.id))-Number(favorites.includes(a.id)))
   list.innerHTML=visible.map(s=>{
     const state=stateFor(s),pages=s.pages||[s.flyer]
@@ -139,7 +156,7 @@ document.querySelector('#flyer-list').addEventListener('click', async event=>{
 const escapeOffer = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
 const searchWords = value => normalize(value).replace(/[^a-z0-9]+/g,' ').trim().split(/\s+/).filter(Boolean)
 for(const option of [...neighborhood.options]) {
-  if(option.value!=='all' && !offers.some(item=>item.neighborhoods.includes(option.value))) option.remove()
+  if(option.value!=='all' && !offers.some(item=>item.neighborhoods.includes(option.value)) && !stores.some(store=>store.neighborhood===option.value||store.branches?.some(branch=>branch.neighborhood===option.value))) option.remove()
 }
 resultCount.setAttribute('aria-live','polite')
 function offerValidity(item) {
@@ -201,3 +218,13 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 render()
 
 // pesquisa-limpa-v1
+
+// Atualiza a validade na virada do dia, inclusive ao retornar ao aplicativo.
+let lastFlyerDate=flyerDateToday()
+function refreshFlyerDate(){
+  const today=flyerDateToday()
+  if(today!==lastFlyerDate){lastFlyerDate=today;render()}
+}
+setInterval(refreshFlyerDate,1000)
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFlyerDate()})
+window.addEventListener('pageshow',refreshFlyerDate)
