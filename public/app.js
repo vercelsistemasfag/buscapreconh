@@ -24,7 +24,20 @@ stores.push({
   branches:[{neighborhood:'Ouro Branco',address:'Rua Bento Gonçalves, 335, Ouro Branco - Novo Hamburgo'}]
 })
 const flyerDateToday=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'}).format(new Date())
-const flyerIsCurrent=(store,today=flyerDateToday())=>store.id==='ofersul'||!store.validFrom||(!store.validUntil?today>=store.validFrom:today>=store.validFrom&&today<=store.validUntil)
+const flyerIsCurrent=(store,today=flyerDateToday())=>store.demo===true||store.id==='ofersul'||!store.validFrom||(!store.validUntil?today>=store.validFrom:today>=store.validFrom&&today<=store.validUntil)
+// super-juca-card-v1
+stores.push({
+  id:'super-juca',name:'Super Juca',demo:true,
+  logo:'/assets/super-juca-logo.png',
+  validFrom:'2026-09-18',validUntil:'2026-09-21',
+  validityLabel:'Encarte de teste · Ofertas originalmente válidas de 18 a 21/09/2026',
+  pages:['/encartes/super-juca/pagina-01.jpg'],
+  branches:[
+    {label:'Loja 1 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Visconde de Araguaia, 331, Santo Afonso - Novo Hamburgo'},
+    {label:'Loja 2 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Carlos Afonso Braunger, 279, Santo Afonso - Novo Hamburgo'},
+    {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'}
+  ]
+})
 for(const store of stores) for(const branch of store.branches||[]) {
   if(![...neighborhood.options].some(option=>option.value===branch.neighborhood)) {
     const option=document.createElement('option');option.value=branch.neighborhood;option.textContent=branch.neighborhood;neighborhood.append(option)
@@ -99,13 +112,13 @@ function renderFlyers(){
   list.innerHTML=visible.map(s=>{
     const state=stateFor(s),pages=s.pages||[s.flyer]
     const matching=s.branches?.findIndex(b=>b.neighborhood===neighborhood.value)
-    if(matching>=0)state.branch=matching
+    if(matching>=0&&s.branches[state.branch]?.neighborhood!==neighborhood.value)state.branch=matching
     const branch=s.branches?.[state.branch]
     return `<article class="flyer-card" id="${s.id}">
       <header class="flyer-heading">
         ${s.logo?`<img src="${s.logo}" alt="Logotipo ${s.name}" />`:''}
         <div class="flyer-heading-details"><h2>${s.name}</h2><p>${s.branches?'Novo Hamburgo':s.neighborhood+' · Novo Hamburgo'}</p>
-        ${branch?`<div class="branch-selector" role="group" aria-label="Escolha a filial">${s.branches.map((b,i)=>`<button type="button" data-branch="${i}" aria-pressed="${state.branch===i}">${b.neighborhood}</button>`).join('')}</div><p class="branch-address" aria-live="polite">${branch.address}</p>`:''}
+        ${branch?`<div class="branch-selector" role="group" aria-label="Escolha a filial">${s.branches.map((b,i)=>`<button type="button" data-branch="${i}" aria-pressed="${state.branch===i}">${b.label||b.neighborhood}</button>`).join('')}</div><p class="branch-address" aria-live="polite">${branch.address}</p>`:''}
         <span class="flyer-validity">${validityFor(s)}</span></div>
       </header>
       <img class="full-flyer" src="${pages[state.page]}" alt="Encarte ${s.name}, página ${state.page+1} de ${pages.length}" />
