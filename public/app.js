@@ -33,9 +33,9 @@ stores.push({
   validityLabel:'Encarte de teste · Ofertas originalmente válidas de 18 a 21/09/2026',
   pages:['/encartes/super-juca/pagina-01.jpg'],
   branches:[
+    {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'},
     {label:'Loja 1 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Visconde de Araguaia, 331, Santo Afonso - Novo Hamburgo'},
-    {label:'Loja 2 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Carlos Afonso Braunger, 279, Santo Afonso - Novo Hamburgo'},
-    {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'}
+    {label:'Loja 2 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Carlos Afonso Braunger, 279, Santo Afonso - Novo Hamburgo'}
   ]
 })
 for(const store of stores) for(const branch of store.branches||[]) {

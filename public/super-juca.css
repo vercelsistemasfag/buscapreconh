@@ -87,3 +87,15 @@
   #super-juca .flyer-heading h2 { font-size: 13px; }
 }
 
+
+/* super-juca-industrial-logo-v2 */
+#super-juca .flyer-heading { grid-template-columns: 96px minmax(0, 1fr) auto; }
+#super-juca .flyer-heading > img {
+  width: 96px; height: 96px; max-width: 100%;
+  object-fit: contain; object-position: center; flex-basis: auto;
+}
+#super-juca .flyer-heading h2 { overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  #super-juca .flyer-heading { grid-template-columns: 82px minmax(0, 1fr) auto; column-gap: 6px; padding: 9px 10px; }
+  #super-juca .flyer-heading > img { width: 82px; height: 82px; }
+}
