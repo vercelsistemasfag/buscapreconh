@@ -137,3 +137,14 @@ main{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidd
     column-gap: 6px !important;
   }
 }
+
+/* remove-x-nativo-da-pesquisa */
+#search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+#search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
