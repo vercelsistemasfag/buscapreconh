@@ -1,0 +1,26 @@
+MEU BUSCA PREÇO
+1. Extraia o ZIP na raiz do projeto.
+2. Execute: python3 aplicar-meu-busca-preco.py
+3. Publique os arquivos da pasta public alterados por esta atualização.
+
+Arquivos:
+- public/assets/meu-busca-preco-logo.svg: marca completa, com assinatura, em curvas vetoriais.
+- public/assets/meu-busca-preco-icone.svg: marca sem assinatura para o aplicativo.
+- public/assets/meu-busca-preco-maskable.svg: composição com respiro extra.
+- public/assets/meu-busca-preco-favicon.svg: símbolo da casinha para tamanhos pequenos.
+- Ícones PNG de 192 e 512 pixels, maskable 512 e Apple 180.
+- Favicon ICO (16/32/48) e PNG.
+
+O SVG foi vetorizado a partir da imagem fornecida, com cores uniformes e sem foto embutida ou dependência de fontes.
+Os ícones são renderizados do SVG. O ícone maskable mantém a arte na região central segura.
+A configuração mantém o fundo verde da abertura do PWA e o fundo branco do ícone.
+O instalador preserva a identidade, endereço inicial e escopo do aplicativo.
+
+Após publicar:
+- Reabra o site e confira o nome, logo e favicon.
+- A atualização do ícone e nome de um PWA já instalado depende do navegador; pode não ser imediata.
+- Se o atalho continuar antigo, remova o atalho antigo e instale o PWA novamente após conferir o site atualizado.
+
+Área segura dos ícones maskable: círculo central com raio de 40% da dimensão.
+Nesta composição, o conteúdo colorido fica dentro de 196 px de raio em 512 px.
+Referência: https://www.w3.org/TR/appmanifest/#icon-masks

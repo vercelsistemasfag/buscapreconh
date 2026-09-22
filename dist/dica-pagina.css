@@ -1,0 +1,17 @@
+.flyer-viewer .flyer-page-hint{
+  position:absolute;top:50%;right:56px;z-index:4;
+  max-width:calc(100% - 72px);padding:8px 10px;
+  border-radius:8px;background:rgba(3,57,38,.55);color:#fff;
+  font-family:inherit;font-size:13px;font-weight:700;line-height:1.25;
+  white-space:nowrap;pointer-events:none;user-select:none;
+  transform:translateY(-50%);
+  animation:flyer-hint-point .8s ease-in-out 4;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+@keyframes flyer-hint-point{
+  0%,100%{transform:translate(-4px,-50%)}
+  50%{transform:translate(0,-50%)}
+}
+@media(prefers-reduced-motion:reduce){
+  .flyer-viewer .flyer-page-hint{animation:none}
+}

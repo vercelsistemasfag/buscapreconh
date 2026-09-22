@@ -1,0 +1,30 @@
+{
+  "name": "Meu Busca Preço",
+  "short_name": "Meu Busca Preço",
+  "description": "Compare ofertas válidas nos mercados de Novo Hamburgo.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#023926",
+  "theme_color": "#023926",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/icons/meu-busca-preco-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/meu-busca-preco-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/meu-busca-preco-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 import {unisuperProducts} from './unisuper-produtos.js'
-import {novosProdutos} from './novos-produtos.js'
-const offers = [...unisuperProducts, ...novosProdutos]
+const offers = unisuperProducts
 
 const grid = document.querySelector('#offer-grid')
 const search = document.querySelector('#search-input')
@@ -34,9 +33,9 @@ stores.push({
   validityLabel:'Encarte de teste · Ofertas originalmente válidas de 18 a 21/09/2026',
   pages:['/encartes/super-juca/pagina-01.jpg'],
   branches:[
-    {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'},
     {label:'Loja 1 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Visconde de Araguaia, 331, Santo Afonso - Novo Hamburgo'},
-    {label:'Loja 2 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Carlos Afonso Braunger, 279, Santo Afonso - Novo Hamburgo'}
+    {label:'Loja 2 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Carlos Afonso Braunger, 279, Santo Afonso - Novo Hamburgo'},
+    {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'}
   ]
 })
 for(const store of stores) for(const branch of store.branches||[]) {
@@ -155,15 +154,9 @@ document.querySelector('#flyer-list').addEventListener('click', async event=>{
     // Page changes stay inside the viewer without scrolling the site.
   }else if(button.dataset.favorite){
     const id=store.id
-    const adding=!favorites.includes(id)
-    favorites=adding?[...favorites,id]:favorites.filter(x=>x!==id)
-    let saved=true
-    try{localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites))}catch{saved=false}
-    renderFlyers()
-    const favoriteButton=document.querySelector('[data-favorite="'+id+'"]')
-    favoriteButton?.focus({preventScroll:true})
-    if(adding)showFavoriteModal(favoriteButton,saved)
-    else showToast('Loja removida dos favoritos.')
+    favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id]
+    try{localStorage.setItem('buscaPrecoFavorites',JSON.stringify(favorites))}catch{}
+    renderFlyers();document.querySelector('[data-favorite="'+id+'"]')?.focus({preventScroll:true})
   }else if(button.dataset.directions){
     showToast('O endereço desta loja será confirmado antes de disponibilizar a rota.')
   }else if(button.dataset.share){
@@ -184,38 +177,6 @@ function offerValidity(item) {
   const end = item.validUntil.split('-').reverse().join('/')
   return today>item.validUntil ? 'Oferta encerrada em '+end : today<item.validFrom ? 'Válida de '+item.validFrom.split('-').reverse().join('/')+' a '+end : 'Válida até '+end
 }
-
-const SEARCH_EQUIVALENTS = {
-  "frango": ["frango","coxa","sobrecoxa","coxinha da asa","peito de frango","galinha"],
-  "cafe": ["cafe"],
-  "sabonete": ["sabonete"],
-  "shampoo": ["shampoo"],
-  "detergente": ["detergente","deterg"],
-  "amaciante": ["amaciante"],
-  "desinfetante": ["desinfetante"],
-  "limpador": ["limpador","limpa casa","multiuso"],
-  "multiuso": ["multiuso","limpador","limpa casa"],
-  "papel higienico": ["papel higienico"],
-  "papel toalha": ["papel toalha"],
-  "creme dental": ["creme dental","pasta de dente"],
-  "pasta de dente": ["pasta de dente","creme dental"],
-  "carne": ["file mignon","picanha","coxao","patinho","tatu","chuleta","agulha","paleta bovina","musculo"],
-  "porco": ["suino","suina","porco","carre","pernil","costela suina"],
-  "carne suina": ["suino","suina","porco","carre","pernil","costela suina"]
-};
-
-function matchesSearch(text, words, fullSearch){
-  if(words.every(word => text.includes(word))) return true;
-
-  for(const [term, equivalents] of Object.entries(SEARCH_EQUIVALENTS)){
-    if(fullSearch === term || fullSearch.includes(term)){
-      if(equivalents.some(eq => text.includes(eq))) return true;
-    }
-  }
-
-  return false;
-}
-
 function render(){
   if(activeFlyerZoom) activeFlyerZoom.setZoom(100,false)
   const term = search.value.trim()
@@ -227,13 +188,13 @@ function render(){
   const words=searchWords(term)
   const filtered=offers.filter(item=>{
     const text=searchWords(`${item.name} ${item.brand} ${item.size} ${item.market} ${item.category}`).join(' ')
-    return matchesSearch(text,words,searchWords) &&
+    return words.every(word=>text.includes(word)) &&
       (neighborhood.value==='all'||item.neighborhoods.includes(neighborhood.value))
   })
   filtered.sort((a,b)=>a.price-b.price)
   grid.innerHTML=filtered.map(item=>{
     const [x,y,width,height]=item.region
-    const pageWidth=item.sourceWidth||({1:1117,2:1138,3:1136,4:1070}[item.page])
+    const pageWidth={1:1117,2:1138,3:1136,4:1070}[item.page]
     const aspect=(width*pageWidth)/(height*1536)
     const sourceStyle=`aspect-ratio:${aspect};background-image:url('${item.image}');background-size:${100/width}% ${100/height}%;background-position:${x/(1-width)*100}% ${y/(1-height)*100}%`
     const branch=neighborhood.value==='all'?item.neighborhoods.join(' · '):neighborhood.value
@@ -243,7 +204,7 @@ function render(){
         <h3>${escapeOffer(item.name)}</h3>
         <p class="offer-size">${escapeOffer([item.brand,item.size].filter(Boolean).join(' · '))}</p>
         <div class="real-price"><strong>${money(item.price)}</strong><span>Preço anunciado${item.size==='kg'?' por kg':''}</span></div>
-        ${item.clubPrice!==null?`<p class="offer-condition">${escapeOffer(item.market==='Rede Unisuper'?'Meu UniSuper':'Preço especial')}: <strong>${money(item.clubPrice)}</strong> · preço do clube</p>`:''}
+        ${item.clubPrice!==null?`<p class="offer-condition">Meu UniSuper: <strong>${money(item.clubPrice)}</strong> · preço do clube</p>`:''}
         ${item.bulk?`<p class="offer-condition">Levando ${item.bulk.quantity} unidades: <strong>${money(item.bulk.price)} cada</strong></p>`:''}
         <p class="real-market">${escapeOffer(item.market)} · ${escapeOffer(branch)}</p>
         <p class="real-validity">${offerValidity(item)} · Enquanto durarem os estoques</p>
@@ -280,25 +241,3 @@ function refreshFlyerDate(){
 setInterval(refreshFlyerDate,1000)
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFlyerDate()})
 window.addEventListener('pageshow',refreshFlyerDate)
-
-// favoritos-modal-v1
-let favoriteModalTimer
-function showFavoriteModal(trigger,saved=true){
-  let dialog=document.querySelector('#favorite-modal')
-  if(!dialog){
-    dialog=document.createElement('dialog')
-    dialog.id='favorite-modal'
-    dialog.setAttribute('aria-labelledby','favorite-modal-title')
-    dialog.setAttribute('aria-describedby','favorite-modal-message favorite-modal-notice')
-    dialog.innerHTML=`<button type="button" class="favorite-modal-close" aria-label="Fechar aviso">×</button><span class="favorite-modal-star" aria-hidden="true">★</span><h2 id="favorite-modal-title">Loja favoritada!</h2><p id="favorite-modal-message">As lojas favoritas aparecem primeiro na lista e você recebe uma notificação sempre que um novo encarte for adicionado.</p><p id="favorite-modal-notice">Avisos de novos encartes ainda não estão ativos nesta versão de teste.</p><p class="favorite-modal-storage" hidden>Não foi possível salvar neste aparelho. A seleção vale enquanto esta página estiver aberta.</p>`
-    document.body.append(dialog)
-    dialog.querySelector('button').addEventListener('click',()=>dialog.close())
-    dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()}})
-    dialog.addEventListener('close',()=>{clearTimeout(favoriteModalTimer);if(dialog.returnFocus?.isConnected)dialog.returnFocus.focus({preventScroll:true})})
-  }
-  clearTimeout(favoriteModalTimer)
-  dialog.returnFocus=trigger
-  dialog.querySelector('.favorite-modal-storage').hidden=saved
-  if(!dialog.open)dialog.showModal()
-  favoriteModalTimer=setTimeout(()=>dialog.close(),7000)
-}

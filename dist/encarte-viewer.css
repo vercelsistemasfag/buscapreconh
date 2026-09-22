@@ -1,0 +1,31 @@
+.flyer-viewer{position:relative;isolation:isolate;width:100%;overflow:hidden;background:#fff}
+.flyer-viewer .flyer-viewport{width:100%;overflow:auto;overscroll-behavior:contain}
+.flyer-viewer .full-flyer{display:block;max-width:none;height:auto}
+.flyer-viewer .flyer-pages{position:absolute;inset:0;z-index:2;display:block;margin:0;padding:0;pointer-events:none}
+.flyer-viewer .flyer-pages button{position:absolute;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:40px;height:64px;padding:8px;border:0;border-radius:12px;background:rgba(35,38,42,.5);color:#fff;pointer-events:auto;cursor:pointer;touch-action:manipulation;backdrop-filter:blur(2px)}
+.flyer-viewer .flyer-pages button[data-page-step="-1"]{left:8px}
+.flyer-viewer .flyer-pages button[data-page-step="1"]{right:8px}
+.flyer-viewer .flyer-pages button:disabled{opacity:.25;cursor:default}
+.flyer-viewer .flyer-pages svg{width:24px;height:32px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.flyer-viewer .flyer-pages span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.flyer-viewer .viewer-zoom{position:absolute;right:8px;bottom:8px;z-index:3;display:flex;gap:0;align-items:center;margin:0;border:0;border-radius:10px;background:rgba(35,38,42,.5);color:white;box-shadow:none;backdrop-filter:blur(2px)}
+.flyer-viewer .viewer-zoom button{width:40px;height:42px;border:0;border-radius:10px;background:transparent;color:white;font-size:22px;font-weight:600;padding:0;touch-action:manipulation}
+.flyer-viewer .viewer-zoom button[data-zoom-reset]{width:52px;font-size:13px}
+.flyer-viewer .viewer-zoom button:disabled{opacity:.35}
+.flyer-viewer button:focus-visible{outline:3px solid #ff6600;outline-offset:-3px}
+.flyer-viewer button:hover:not(:disabled){background:rgba(35,38,42,.65)}
+
+/* rolagem-natural-v4 */
+.flyer-viewer .flyer-viewport {
+  height: auto !important;
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: auto;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+.flyer-viewer .full-flyer { touch-action: pan-x pan-y pinch-zoom; }
+.flyer-viewer .viewer-zoom {
+  transform: scale(.8);
+  transform-origin: bottom right;
+}

@@ -1,0 +1,71 @@
+diff --git a/public/app.js b/public/app.js
+index 3a7ccf5..9cf7494 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -69,7 +69,7 @@ function render(){
+   const term = normalize(search.value.trim())
+   document.querySelector('.category-scroll').hidden = !term
+   document.querySelector('.offers-section').hidden = !term
+-  document.querySelector('#sort-label').hidden = !term
++  document.querySelector('#sort-row').hidden = !term
+   document.querySelector('#flyer-list').hidden = !!term
+   if (!term) { renderFlyers(); clearSearch.hidden = true; return }
+   let filtered = offers.filter(item => {
+diff --git a/public/index.html b/public/index.html
+index 19ef64f..7e111cf 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -29,16 +29,18 @@
+           <button id="clear-search" type="button" aria-label="Limpar busca" hidden>×</button>
+         </label>
+ 
+-        <div class="filter-row">
+-          <label>
+-            <span>Bairro</span>
+-            <select id="neighborhood-filter">
+-              <option value="all">Todos os bairros</option>
+-              <option value="Canudos">Canudos</option>
+-              <option value="Centro">Centro</option>
+-              <option value="Santo Afonso">Santo Afonso</option>
+-            </select>
+-          </label>
++        <label class="search-box neighborhood-box" for="neighborhood-filter">
++          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
++          <select id="neighborhood-filter" aria-label="Selecione o Bairro">
++            <option value="all" selected disabled hidden>Selecione o Bairro</option>
++            <option value="all">Todos</option>
++            <option value="Centro">Centro</option>
++            <option value="Canudos">Canudos</option>
++            <option value="Santo Afonso">Santo Afonso</option>
++          </select>
++        </label>
++
++        <div class="filter-row" id="sort-row" hidden>
+           <label id="sort-label">
+             <span>Ordenar</span>
+             <select id="sort-filter">
+diff --git a/public/style.css b/public/style.css
+index 108c3f0..d2248f8 100644
+--- a/public/style.css
++++ b/public/style.css
+@@ -21,3 +21,10 @@
+ body>footer{margin-top:0;padding:20px 16px}
+ @media(min-width:720px){.search-panel{padding:12px 16px}.search-panel>*{max-width:728px}.filter-row{grid-template-columns:260px 280px}.flyer-list{padding-top:20px}}
+ @media(max-width:390px){.filter-row{grid-template-columns:1fr}.flyer-heading{padding:12px;gap:10px}.flyer-heading img{width:65px}.flyer-actions button{font-size:12px}}
++
++/* Matching product search and neighborhood selector. */
++.search-box svg{flex:0 0 23px;height:23px}
++.neighborhood-box{margin-top:8px}
++.neighborhood-box select{flex:1;width:100%;min-width:0;height:44px;border:0;outline:0;color:#142d40;background:transparent;font-size:1rem;font-weight:400;cursor:pointer}
++.neighborhood-box select:has(option:disabled:checked){color:#8293a1}
++.neighborhood-box option{color:#142d40;background:#fff}
+diff --git a/public/sw.js b/public/sw.js
+index 4c6f5ab..62af94b 100644
+--- a/public/sw.js
++++ b/public/sw.js
+@@ -1,4 +1,4 @@
+-const CACHE = 'busca-preco-nh-v2'
++const CACHE = 'busca-preco-nh-v3'
+ const SHELL = ['/', '/style.css', '/app.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png']
+ self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()})
+ self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()})

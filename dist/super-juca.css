@@ -1,0 +1,101 @@
+
+#super-juca .flyer-heading { align-items: flex-start; gap: 8px; }
+#super-juca .flyer-heading > img {
+  display: block;
+  flex: 0 0 82px;
+  width: 82px;
+  height: 64px;
+  object-fit: contain;
+  object-position: center top;
+  margin: 0;
+  background: #fff;
+}
+@media (max-width: 390px) {
+  #super-juca .flyer-heading > img { flex-basis: 67px; width: 67px; height: 58px; }
+}
+
+/* cabecalho-unisuper-compacto-v3 */
+#super-juca .flyer-heading {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  row-gap: 3px;
+  align-items: center;
+  padding: 10px 12px;
+}
+#super-juca .flyer-heading > img {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 70px;
+  height: 52px;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+}
+#super-juca .flyer-heading-details { display: contents; }
+#super-juca .flyer-heading h2 {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+#super-juca .flyer-heading-details > p:not(.branch-address) {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.2;
+}
+#super-juca .branch-selector {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+#super-juca .branch-selector button {
+  min-height: 26px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+#super-juca .flyer-heading .branch-address {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 3px 0 0;
+  font-size: 12px;
+  line-height: 1.25;
+}
+#super-juca .flyer-validity {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.25;
+}
+@media (max-width: 350px) {
+  #super-juca .flyer-heading { grid-template-columns: 58px minmax(0, 1fr) auto; column-gap: 6px; padding: 9px 10px; }
+  #super-juca .flyer-heading > img { width: 58px; height: 46px; }
+  #super-juca .flyer-heading h2 { font-size: 13px; }
+}
+
+
+/* super-juca-industrial-logo-v2 */
+#super-juca .flyer-heading { grid-template-columns: 96px minmax(0, 1fr) auto; }
+#super-juca .flyer-heading > img {
+  width: 96px; height: 96px; max-width: 100%;
+  object-fit: contain; object-position: center; flex-basis: auto;
+}
+#super-juca .flyer-heading h2 { overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  #super-juca .flyer-heading { grid-template-columns: 82px minmax(0, 1fr) auto; column-gap: 6px; padding: 9px 10px; }
+  #super-juca .flyer-heading > img { width: 82px; height: 82px; }
+}

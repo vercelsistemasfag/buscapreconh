@@ -1,0 +1,8 @@
+.flyer-zoom-dock{min-height:0;padding:0;height:0}
+.flyer-zoom.is-floating{position:fixed;z-index:60;display:flex;align-items:center;gap:0;max-width:calc(100vw - 24px);border:1px solid rgba(2,57,38,.22);border-radius:12px;background:rgba(255,255,255,.65);color:#023926;box-shadow:0 2px 9px #01291c1c;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.flyer-zoom[hidden]{display:none!important}
+.flyer-zoom button{width:42px;height:44px;padding:0;border:0;border-radius:11px;background:transparent;color:#023926;font-family:inherit;font-size:23px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.flyer-zoom button[data-zoom-reset]{width:54px;font-size:13px;font-weight:700}
+.flyer-zoom button:disabled{opacity:.35;cursor:default}
+.flyer-zoom button:focus-visible{outline:2px solid #ff6600;outline-offset:2px}
+.flyer-zoom button:hover:not(:disabled){background:rgba(2,57,38,.08)}

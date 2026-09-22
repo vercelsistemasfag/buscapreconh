@@ -1,0 +1,33 @@
+BUSCA PREÇO — PESQUISA REAL
+
+Na raiz do projeto:
+unzip -o busca-preco-pesquisa-real.zip -d .
+python3 aplicar-pesquisa-real.py
+
+Depois:
+git add public/app.js public/index.html public/sw.js public/unisuper-produtos.js public/busca-real.css
+git commit -m "Pesquisa com ofertas reais e controles mais transparentes"
+git push
+
+O pacote usa as quatro imagens já instaladas em public/encartes/unisuper/pagina-01.jpg até pagina-04.jpg.
+
+Alterações:
+- Setas e zoom com fundo a 30% de opacidade, sem desfoque. Posição, tamanho e rolagem preservados.
+- Exemplos substituídos por 93 ofertas transcritas do encarte de 18 a 20/09/2026.
+- Imagens dos resultados são regiões do encarte original, exibidas via CSS.
+- Pesquisa por produto, marca e tamanho; filtros de categoria e bairro.
+- Preço comum, preço do clube e descontos por quantidade identificados separadamente.
+- Ordenação por preço anunciado (sem aplicar descontos condicionais) ou data do encarte.
+- Botão "Ver no encarte" abre a página correta e mantém a filial.
+- Após a validade, as ofertas permanecem consultáveis com indicação de encerradas.
+
+Teste no celular após a publicação:
+1. Busque "feijao": Caldão 1 kg, R$ 6,49, página 1.
+2. Busque "cafe caboclo": R$ 27,98 e R$ 22,98 com Meu UniSuper.
+3. Busque "fini": R$ 8,99; levando 2 unidades, R$ 6,99 cada.
+4. Selecione Rondônia e busque "iogurte nestle". Abra o encarte: página 3, filial Rondônia.
+5. Confira rolagem natural, setas e zoom no aparelho.
+
+O catálogo foi cadastrado para este encarte. A troca das imagens por um encarte novo exige atualizar também public/unisuper-produtos.js (produtos, preços, condições, validade e regiões). Este pacote não faz leitura automática de novos encartes.
+
+Verificações locais: instalação repetida, pesquisa com/sem acentos e múltiplas palavras, filtros, ordenação, preço de clube/quantidade, nenhum resultado, página correta, filial/endereço, zoom e reset. A aparência e o toque devem ser conferidos no aparelho após instalar.

@@ -1,0 +1,27 @@
+/* Subtler overlays; retain the current position, size and native scrolling. */
+.flyer-viewer .flyer-pages button,
+.flyer-viewer .viewer-zoom {
+  background:rgba(35,38,42,.30);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.45);
+}
+.flyer-viewer button:hover:not(:disabled){background:rgba(35,38,42,.40)}
+.offer-card.real-offer{overflow:hidden;background:white}
+.real-offer .offer-source-wrap{padding:8px;background:white}
+.real-offer .offer-source{width:100%;background-repeat:no-repeat;background-color:white}
+.real-offer .offer-content{padding:12px;display:flex;flex-direction:column;gap:7px}
+.real-offer .offer-content h3{margin:0;font-size:16px;line-height:1.25}
+.real-offer p{margin:0;line-height:1.35}
+.real-offer .offer-size{font-size:12px;color:#5b6861}
+.real-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
+.real-price strong{font-size:25px;color:#063d2a}
+.real-price span,.offer-condition,.real-market,.real-validity{font-size:12px}
+.offer-condition{padding:6px 8px;background:#eff7ed;border-radius:6px;color:#14492d}
+.real-validity{color:#685a2c}
+.open-source{border:0;border-radius:8px;background:#063d2a;color:white;min-height:42px;padding:9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.open-source:focus-visible{outline:3px solid #ff8800;outline-offset:2px}
+
+/* pesquisa-limpa-v1 */
+.search-order-title{flex:0 0 auto;position:relative;margin:0;width:100%;padding:12px max(16px,calc((100vw - 1088px)/2));background:#fff;color:#193b2d;border-bottom:1px solid #dce6d8;font-size:15px;font-weight:700;line-height:1.3}
+.search-order-title[hidden]{display:none}
