@@ -227,7 +227,7 @@ function render(){
   const words=searchWords(term)
   const filtered=offers.filter(item=>{
     const text=searchWords(`${item.name} ${item.brand} ${item.size} ${item.market} ${item.category}`).join(' ')
-    return matchesSearch(text,words,searchWords) &&
+    return matchesSearch(text,words,normalize(term)) &&
       (neighborhood.value==='all'||item.neighborhoods.includes(neighborhood.value))
   })
   filtered.sort((a,b)=>a.price-b.price)
