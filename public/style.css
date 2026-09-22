@@ -148,3 +148,26 @@ main{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidd
 #search-input::-webkit-search-decoration {
   -webkit-appearance: none;
 }
+
+/* rodape-v2 */
+footer {
+  text-align: center;
+  padding: 18px 16px;
+  gap: 4px;
+}
+
+footer small {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+footer a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
