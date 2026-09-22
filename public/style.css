@@ -171,3 +171,17 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+
+/* rodape-v3 */
+footer {
+  text-align: left;
+  padding: 14px 20px 18px;
+  gap: 1px;
+}
+
+footer small {
+  display: block;
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
