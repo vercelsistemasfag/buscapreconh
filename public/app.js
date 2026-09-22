@@ -3,6 +3,7 @@ import {novosProdutos} from './novos-produtos.js'
 const offers = [...unisuperProducts, ...novosProdutos]
 
 const grid = document.querySelector('#offer-grid')
+const searchBanner = document.querySelector(".flyer-intro")
 const search = document.querySelector('#search-input')
 const neighborhood = document.querySelector('#neighborhood-filter')
 const resultCount = document.querySelector('#result-count')
@@ -219,6 +220,7 @@ function matchesSearch(text, words, fullSearch){
 function render(){
   if(activeFlyerZoom) activeFlyerZoom.setZoom(100,false)
   const term = search.value.trim()
+  if (searchBanner) searchBanner.style.display = term ? "none" : "";
   document.querySelector('#search-order-title').hidden = !term
   document.querySelector('.offers-section').hidden = !term
   document.querySelector('#flyer-list').hidden = !!term
