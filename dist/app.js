@@ -18,7 +18,7 @@ stores.push({id:'rede-unisuper',name:'Rede Unisuper',logo:'/assets/unisuper-logo
 for(const name of ['Pátria Nova','Rondônia']){if(![...neighborhood.options].some(o=>o.value===name)){const option=document.createElement('option');option.value=name;option.textContent=name;neighborhood.append(option)}}
 // ofersul-card-v1
 stores.push({
-  id:'ofersul', name:'Ofersul Supermercados',
+  id:'ofersul', name:'Ofersul NH',
   logo:'/assets/ofersul-logo.jpg',
   validFrom:'2026-09-21', validUntil:'2026-09-21',
   validityLabel:'Encarte de teste · Ofertas originalmente válidas em 21/09/2026',

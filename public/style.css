@@ -87,3 +87,53 @@ main{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidd
     flex-basis: 82px !important;
   }
 }
+
+/* alinhamento-logo-nome-v1 */
+.flyer-heading {
+  grid-template-columns: 110px minmax(0, 1fr) auto !important;
+  column-gap: 12px !important;
+}
+
+.flyer-heading > img {
+  justify-self: center !important;
+}
+
+.flyer-heading h2 {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 380px) {
+  .flyer-heading {
+    grid-template-columns: 94px minmax(0, 1fr) auto !important;
+    column-gap: 8px !important;
+  }
+
+  .flyer-heading h2 {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* ajuste-final-cabecalho-lojas-v2 */
+.flyer-heading {
+  grid-template-columns: 96px minmax(0, 1fr) auto !important;
+  column-gap: 8px !important;
+}
+
+.flyer-heading h2,
+.flyer-heading-details {
+  min-width: 0;
+}
+
+.flyer-heading-details {
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .flyer-heading {
+    grid-template-columns: 82px minmax(0, 1fr) auto !important;
+    column-gap: 6px !important;
+  }
+}
