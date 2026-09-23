@@ -185,3 +185,35 @@ footer small {
   font-size: 0.68rem;
   line-height: 1.35;
 }
+
+/* rodape-lambari */
+.footer-credit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.footer-credit a {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.footer-lambari {
+  width: 76px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 480px) {
+  .footer-credit {
+    font-size: 0.62rem;
+  }
+
+  .footer-lambari {
+    width: 68px;
+  }
+}
