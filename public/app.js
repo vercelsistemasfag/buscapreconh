@@ -254,7 +254,8 @@ function render(){
   grid.innerHTML=filtered.map(item=>{
     const [x,y,width,height]=item.region
     const pageWidth=item.sourceWidth||({1:1117,2:1138,3:1136,4:1070}[item.page])
-    const aspect=(width*pageWidth)/(height*1536)
+    const pageHeight=item.sourceHeight||1536
+    const aspect=(width*pageWidth)/(height*pageHeight)
     const sourceStyle=`aspect-ratio:${aspect};background-image:url('${item.image}');background-size:${100/width}% ${100/height}%;background-position:${x/(1-width)*100}% ${y/(1-height)*100}%`
     const branch=neighborhood.value==='all'?item.neighborhoods.join(' · '):neighborhood.value
     return `<article class="offer-card real-offer" data-offer-id="${item.id}">
