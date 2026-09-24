@@ -17,7 +17,7 @@ const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
 const stores = []
 stores.push({
   id:'super-osana',
-  name:'Supermercados Osana',
+  name:'Super Osana',
   demo:true,
   logo:'/logo-osana.png',
   validFrom:'2026-06-06',
