@@ -1,6 +1,7 @@
 import {unisuperProducts} from './unisuper-produtos.js'
 import {novosProdutos} from './novos-produtos.js'
-const offers = [...unisuperProducts, ...novosProdutos]
+import {osanaProducts} from './osana-produtos.js'
+const offers = [...osanaProducts, ...unisuperProducts, ...novosProdutos]
 
 const grid = document.querySelector('#offer-grid')
 const searchBanner = document.querySelector(".flyer-intro")
@@ -14,6 +15,23 @@ const money = value => value.toLocaleString('pt-BR',{style:'currency',currency:'
 const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
 
 const stores = []
+stores.push({
+  id:'super-osana',
+  name:'Supermercados Osana',
+  demo:true,
+  logo:'/superosana.png',
+  validFrom:'2026-06-06',
+  validUntil:'2026-06-06',
+  validityLabel:'Encarte de teste · Oferta originalmente válida em 06/06/2026',
+  pages:['/superosana.png'],
+  branches:[
+    {label:'Guarani', neighborhood:'Guarani', address:'Rua Joaquim Pedro Soares, 1013, Novo Hamburgo'},
+    {label:'Ideal', neighborhood:'Ideal', address:'Av. Cel. Frederico Linck, 815, Novo Hamburgo'},
+    {label:'Roselândia', neighborhood:'Roselândia', address:'Rua Francisco Alves, 325, Novo Hamburgo'},
+    {label:'Via Rosa', neighborhood:'Via Rosa', address:'Rua Vinte e Quatro de Maio, 440, Novo Hamburgo'}
+  ]
+})
+
 stores.push({id:'rede-unisuper',name:'Rede Unisuper',logo:'/assets/unisuper-logo-branco.png',validUntil:'2026-09-20',pages:[1,2,3,4].map(n=>`/encartes/unisuper/pagina-0${n}.jpg`),branches:[{neighborhood:'Pátria Nova',address:'Rua Primeiro de Março, 2131, Pátria Nova - Novo Hamburgo'},{neighborhood:'Rondônia',address:'Rua Guilherme Growermann, 515, Rondônia - Novo Hamburgo'}]})
 for(const name of ['Pátria Nova','Rondônia']){if(![...neighborhood.options].some(o=>o.value===name)){const option=document.createElement('option');option.value=name;option.textContent=name;neighborhood.append(option)}}
 // ofersul-card-v1
