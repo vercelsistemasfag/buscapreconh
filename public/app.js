@@ -256,7 +256,9 @@ function render(){
     const pageWidth=item.sourceWidth||({1:1117,2:1138,3:1136,4:1070}[item.page])
     const pageHeight=item.sourceHeight||1536
     const aspect=(width*pageWidth)/(height*pageHeight)
-    const sourceStyle=`aspect-ratio:${aspect};background-image:url('${item.image}');background-size:${100/width}% ${100/height}%;background-position:${x/(1-width)*100}% ${y/(1-height)*100}%`
+    const sourceStyle=item.productImage
+      ? `aspect-ratio:1;background-image:url('${item.productImage}');background-size:contain;background-position:center;background-repeat:no-repeat`
+      : `aspect-ratio:${aspect};background-image:url('${item.image}');background-size:${100/width}% ${100/height}%;background-position:${x/(1-width)*100}% ${y/(1-height)*100}%`
     const branch=neighborhood.value==='all'?item.neighborhoods.join(' · '):neighborhood.value
     return `<article class="offer-card real-offer" data-offer-id="${item.id}">
       <div class="offer-source-wrap"><div class="offer-source" role="img" aria-label="${escapeOffer('Oferta de '+item.name+' '+item.brand+' na página '+item.page+' do encarte')}" style="${sourceStyle}"></div></div>

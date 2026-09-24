@@ -20,6 +20,13 @@ export const osanaProducts = [
   validFrom:'2026-06-06',
   validUntil:'2026-06-06',
   image:'/superosana.png',
+  productImage:{
+    'osana-1':'/produtos-osana/01_filezinho_sassami_agrosul_700g.png',
+    'osana-2':'/produtos-osana/02_contra_file_bovino_vacuo.png',
+    'osana-3':'/produtos-osana/03_coxa_sobrecoxa_frango_congelada.png',
+    'osana-4':'/produtos-osana/04_coxinha_asa_agrosul_iqf_800g.png'
+  }[id],
+
   sourceWidth:1131,
   sourceHeight:1391
 }))
