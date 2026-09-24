@@ -28,7 +28,7 @@ stores.push({
     {label:'Guarani', neighborhood:'Guarani', address:'Rua Joaquim Pedro Soares, 1013, Novo Hamburgo'},
     {label:'Ideal', neighborhood:'Ideal', address:'Av. Cel. Frederico Linck, 815, Novo Hamburgo'},
     {label:'Roselândia', neighborhood:'Roselândia', address:'Rua Francisco Alves, 325, Novo Hamburgo'},
-    {label:'Via Rosa', neighborhood:'Via Rosa', address:'Rua Vinte e Quatro de Maio, 440, Novo Hamburgo'}
+    {label:'Vila Rosa', neighborhood:'Vila Rosa', address:'Rua Vinte e Quatro de Maio, 440, Novo Hamburgo'}
   ]
 })
 
@@ -51,7 +51,7 @@ stores.push({
   logo:'/assets/super-juca-logo.png',
   validFrom:'2026-09-18',validUntil:'2026-09-21',
   validityLabel:'Encarte de teste · Ofertas originalmente válidas de 18 a 21/09/2026',
-  pages:['/encartes/super-juca/pagina-01.jpg'],
+  pages:['/jucanovo.png'],
   branches:[
     {label:'Industrial',neighborhood:'Industrial',address:'Rua Pinheiro Machado, 415, Industrial - Novo Hamburgo'},
     {label:'Loja 1 · Santo Afonso',neighborhood:'Santo Afonso',address:'Rua Visconde de Araguaia, 331, Santo Afonso - Novo Hamburgo'},
