@@ -217,3 +217,44 @@ footer small {
     width: 68px;
   }
 }
+
+/* super-osana-card-v1 */
+#super-osana .flyer-heading {
+  min-width: 0;
+}
+
+#super-osana .flyer-heading > img {
+  width: 96px;
+  height: 96px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  flex-basis: auto;
+}
+
+#super-osana .flyer-heading > div {
+  min-width: 0;
+}
+
+#super-osana .branch-buttons {
+  flex-wrap: wrap;
+}
+
+#super-osana .flyer-address,
+#super-osana .flyer-validity {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media (max-width: 480px) {
+  #super-osana .flyer-heading > img {
+    width: 82px;
+    height: 82px;
+  }
+
+  #super-osana .branch-buttons > button {
+    white-space: normal;
+  }
+}

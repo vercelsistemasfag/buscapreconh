@@ -19,7 +19,7 @@ stores.push({
   id:'super-osana',
   name:'Supermercados Osana',
   demo:true,
-  logo:'/superosana.png',
+  logo:'/logo-osana.png',
   validFrom:'2026-06-06',
   validUntil:'2026-06-06',
   validityLabel:'Encarte de teste · Oferta originalmente válida em 06/06/2026',
