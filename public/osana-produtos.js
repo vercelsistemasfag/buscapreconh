@@ -1,42 +1,24 @@
 export const osanaProducts = [
-  {
-    id: 'osana-1',
-    market: 'Supermercados Osana',
-    storeId: 'super-osana',
-    name: 'Filezinho Sassami Agrosul IQF Congelado 700g',
-    price: 12.99,
-    originalPrice: 14.99,
-    unit: 'un',
-    image: '/superosana.png'
-  },
-  {
-    id: 'osana-2',
-    market: 'Supermercados Osana',
-    storeId: 'super-osana',
-    name: 'Contra Filé Bovino a Vácuo',
-    price: 46.90,
-    originalPrice: 54.90,
-    unit: 'kg',
-    image: '/superosana.png'
-  },
-  {
-    id: 'osana-3',
-    market: 'Supermercados Osana',
-    storeId: 'super-osana',
-    name: 'Coxa e Sobrecoxa de Frango Congelada',
-    price: 5.99,
-    originalPrice: 6.99,
-    unit: 'kg',
-    image: '/superosana.png'
-  },
-  {
-    id: 'osana-4',
-    market: 'Supermercados Osana',
-    storeId: 'super-osana',
-    name: 'Coxinha da Asa Agrosul Congelada IQF 800g',
-    price: 8.99,
-    originalPrice: 10.99,
-    unit: 'un',
-    image: '/superosana.png'
-  }
-]
+  ['osana-1','Filezinho sassami congelado IQF','Agrosul','700 g',14.99,'Carnes',1,[0,0,1,1],12.99],
+  ['osana-2','Contra filé bovino a vácuo','','kg',54.90,'Carnes',1,[0,0,1,1],46.90],
+  ['osana-3','Coxa e sobrecoxa de frango congelada','','kg',6.99,'Carnes',1,[0,0,1,1],5.99],
+  ['osana-4','Coxinha da asa congelada IQF','Agrosul','800 g',10.99,'Carnes',1,[0,0,1,1],8.99]
+].map(([id,name,brand,size,price,category,page,region,clubPrice]) => ({
+  id,
+  name,
+  brand,
+  size,
+  price,
+  category,
+  clubPrice,
+  bulk:null,
+  page,
+  region,
+  market:'Supermercados Osana',
+  storeId:'super-osana',
+  neighborhoods:['Guarani','Ideal','Roselândia','Via Rosa'],
+  validFrom:'2026-06-06',
+  validUntil:'2026-06-06',
+  image:'/superosana.png',
+  sourceWidth:1131
+}))
