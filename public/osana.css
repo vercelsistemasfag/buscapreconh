@@ -111,3 +111,83 @@
     padding: 4px 6px !important;
   }
 }
+
+/* Osana — cabecalho compacto v2 */
+#super-osana .flyer-heading {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto auto auto auto !important;
+  column-gap: 10px !important;
+  row-gap: 2px !important;
+  align-items: start !important;
+}
+
+#super-osana .flyer-heading > img {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 96px !important;
+  height: 72px !important;
+  max-width: 96px !important;
+  justify-self: start !important;
+}
+
+#super-osana .flyer-heading h2 {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  margin: 1px 0 0 !important;
+  font-size: 13px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+#super-osana .flyer-heading-details > p:not(.branch-address) {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  margin: 1px 0 0 !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+}
+
+#super-osana .branch-selector {
+  grid-column: 2 !important;
+  grid-row: 1 / 4 !important;
+  align-self: start !important;
+  min-width: 126px;
+}
+
+#super-osana .branch-selector button {
+  min-height: 25px !important;
+  padding: 4px 9px !important;
+  font-size: 10.5px !important;
+}
+
+#super-osana .branch-address {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+  margin-top: 7px !important;
+  font-size: 11px !important;
+}
+
+#super-osana .flyer-validity {
+  grid-column: 1 / -1 !important;
+  grid-row: 5 !important;
+  font-size: 10.5px !important;
+}
+
+@media (max-width: 380px) {
+  #super-osana .flyer-heading > img {
+    width: 86px !important;
+    height: 66px !important;
+  }
+
+  #super-osana .flyer-heading h2 {
+    font-size: 12px !important;
+  }
+
+  #super-osana .branch-selector {
+    min-width: 116px;
+  }
+
+  #super-osana .branch-selector button {
+    font-size: 10px !important;
+  }
+}
