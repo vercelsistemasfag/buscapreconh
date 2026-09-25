@@ -1,3 +1,7 @@
+# Documentação para colaboradores e IA
+
+Antes de alterar o projeto, leia AGENTS.md e MANUAL-PROJETO-MEU-BUSCA-PRECO.md completos.
+
 # Busca Preço NH — protótipo
 
 Esta versão inclui a página inicial com encarte completo, pesquisa e filtro por bairro. Os resultados em grade aparecem após a pesquisa; favoritos são salvos neste navegador.
