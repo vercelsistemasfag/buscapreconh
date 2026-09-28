@@ -16,3 +16,27 @@
 .jingle-error{margin:0;font-size:12px;text-align:center}
 .jingle-player button:focus-visible,.jingle-player input:focus-visible{outline:2px solid white;outline-offset:3px}
 @media(min-width:720px){.jingle-player{padding:20px 32px;gap:18px}.jingle-controls{gap:20px}.jingle-controls button{width:56px;height:56px}.jingle-controls svg{width:30px;height:30px}#jingle-time{font-size:14px}}
+
+/* Player compacto: destaque principal para o banner */
+.jingle-player{
+  aspect-ratio:auto;
+  padding:6px 12px;
+  gap:2px;
+  margin:4px 0 10px;
+  border-width:1px;
+  border-radius:12px;
+}
+.jingle-title{
+  font-size:clamp(12px,3.5cqi,18px);
+  line-height:1.2;
+  font-weight:700;
+}
+.jingle-controls{gap:8px}
+.jingle-controls button{
+  width:44px;
+  height:44px;
+  padding:12px;
+}
+.jingle-controls svg{width:20px;height:20px}
+#jingle-progress{height:18px}
+#jingle-time{font-size:10px}
