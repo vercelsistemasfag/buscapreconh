@@ -1,6 +1,6 @@
 # Manual do Projeto — Meu Busca Preço
 
-Última atualização: 24/09/2026
+Última atualização: 27/09/2026
 
 Este documento registra a arquitetura, os padrões visuais, as regras de negócio e o fluxo de manutenção do projeto.
 
@@ -296,3 +296,13 @@ Acesse o projeto Meu Busca Preço. Antes de alterar qualquer arquivo, leia AGENT
 Atualizar este documento sempre que houver nova loja, nova regra de validade, mudança na estrutura de produtos, alteração importante na busca, favoritos, PWA, publicação ou padrão visual dos cards.
 
 O objetivo é permitir que outro desenvolvedor ou outro ChatGPT continue o projeto sem depender do histórico de conversas anteriores.
+
+## 25. PLAYER DO JINGLE
+
+Player abaixo do banner, dentro de `.flyer-intro`, mantendo a largura do banner e a identidade verde. O texto centralizado usa duas linhas: “Ouça nosso jingle que toca” e “nas principais rádios da cidade!”.
+
+Arquivos: `public/jingle.css`, `public/jingle.js` e `public/audio/meu-busca-preco-jingle.mp3`. Áudio estéreo fornecido pelo responsável, com aproximadamente 25 segundos.
+
+Reprodução somente por iniciativa do usuário, com pausa, busca na faixa e botão de silenciar. O player acompanha a ocultação do banner durante pesquisas; uma reprodução já iniciada continua.
+
+O service worker armazena os arquivos de interface, mas deixa as requisições de áudio passarem diretamente para a rede para preservar respostas parciais HTTP (Range). O jingle requer conexão; não é pré-carregado no cache offline.

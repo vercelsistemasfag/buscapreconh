@@ -1,0 +1,18 @@
+.jingle-player{box-sizing:border-box;container-type:inline-size;margin:8px 0 12px;padding:10px 16px;border:2px solid #37940f;border-radius:16px;background:linear-gradient(115deg,#01291c,#023926);color:#fff;aspect-ratio:2183/720;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.jingle-title{margin:0;text-align:center;font-size:clamp(14px,4.3cqi,36px);font-weight:800;line-height:1.2;letter-spacing:-.02em}
+.jingle-title span{display:block}
+.jingle-controls{display:flex;align-items:center;gap:12px}
+.jingle-controls button{flex-shrink:0;display:grid;place-items:center;width:44px;height:44px;padding:10px;border:0;cursor:pointer;color:white}
+.jingle-play{border-radius:50%;background:#37940f}
+.jingle-mute{background:transparent;border-radius:8px}
+.jingle-controls svg{width:24px;height:24px;fill:currentColor}
+.jingle-mute svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.jingle-pause-icon,.jingle-muted-icon{display:none}
+.jingle-play.is-playing .jingle-play-icon,.jingle-mute[aria-pressed=true] .jingle-sound-waves{display:none}
+.jingle-play.is-playing .jingle-pause-icon,.jingle-mute[aria-pressed=true] .jingle-muted-icon{display:block}
+.jingle-track{flex:1;min-width:0;display:grid;align-content:center}
+#jingle-progress{width:100%;height:24px;margin:0;accent-color:#fff;cursor:pointer}
+#jingle-time{font-size:12px;line-height:1;font-variant-numeric:tabular-nums}
+.jingle-error{margin:0;font-size:12px;text-align:center}
+.jingle-player button:focus-visible,.jingle-player input:focus-visible{outline:2px solid white;outline-offset:3px}
+@media(min-width:720px){.jingle-player{padding:20px 32px;gap:18px}.jingle-controls{gap:20px}.jingle-controls button{width:56px;height:56px}.jingle-controls svg{width:30px;height:30px}#jingle-time{font-size:14px}}

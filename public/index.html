@@ -46,6 +46,7 @@
 <link rel="stylesheet" href="/super-juca.css">
 <link rel="stylesheet" href="/osana.css">
 <link rel="stylesheet" href="/favoritos.css">
+<link rel="stylesheet" href="/jingle.css">
 </head>
   <body>
     <header class="topbar">
@@ -82,6 +83,17 @@
       <div class="content-scroll" id="content-scroll">
         <section class="flyer-intro" aria-label="Encontre encartes em Novo Hamburgo">
           <img class="flyer-intro-art" src="/assets/banner-encartes-moderno.png" width="2183" height="720" alt="Os melhores encartes de Novo Hamburgo, em um só lugar. PESQUISE E COMPRE PERTO DE CASA PAGANDO O MENOR PREÇO!" decoding="async" />
+          <div class="jingle-player" role="region" aria-labelledby="jingle-title">
+            <p id="jingle-title" class="jingle-title"><span>Ouça nosso jingle que toca</span><span>nas principais rádios da cidade!</span></p>
+            <audio id="jingle-audio" preload="metadata" src="/audio/meu-busca-preco-jingle.mp3"></audio>
+            <div class="jingle-controls" id="jingle-controls" hidden>
+              <button class="jingle-play" id="jingle-play" type="button" aria-label="Reproduzir jingle"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="jingle-play-icon" d="M8 4v16l13-8z"/><path class="jingle-pause-icon" d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+              <div class="jingle-track"><input id="jingle-progress" type="range" min="0" max="100" step="0.1" value="0" aria-label="Posição do jingle" disabled><output id="jingle-time" for="jingle-progress">0:00</output></div>
+              <button class="jingle-mute" id="jingle-mute" type="button" aria-label="Silenciar jingle" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" fill="currentColor" stroke="none"/><path class="jingle-sound-waves" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="jingle-muted-icon" d="m16 9 6 6m0-6-6 6"/></svg></button>
+            </div>
+            <p class="jingle-error" id="jingle-error" role="status" hidden>Não foi possível reproduzir. Toque em reproduzir para tentar novamente.</p>
+            <noscript><audio controls preload="none" src="/audio/meu-busca-preco-jingle.mp3">Ouça o <a href="/audio/meu-busca-preco-jingle.mp3">jingle</a>.</audio></noscript>
+          </div>
         </section>
 
       <section class="content-section offers-section" aria-labelledby="offers-title">
@@ -113,6 +125,7 @@
     </main>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script type="module" src="/app.js"></script>
+    <script type="module" src="/jingle.js"></script>
   <script type="module" src="/dica-pagina.js"></script>
 </body>
 </html>
