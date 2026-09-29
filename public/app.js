@@ -399,18 +399,14 @@ window.addEventListener('beforeinstallprompt', event => {
   updateInstallButtons()
 })
 installButton.addEventListener('click', async () => {
-  if (isInstalledView()) return
-  if (!installPrompt){
-    showInstallHelp()
-    return
-  }
+  if (isInstalledView() || !installPrompt) return
   const prompt = installPrompt
   installPrompt = null
   try {
     await prompt.prompt()
     await prompt.userChoice
-  } catch {
-    showInstallHelp()
+  } catch (error) {
+    console.warn('Instalação direta indisponível.', error)
   }
 })
 iosButton.addEventListener('click', () => {
