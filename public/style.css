@@ -296,3 +296,13 @@ footer small {
 @media (display-mode:standalone), (display-mode:fullscreen){
   #install-button{display:none}
 }
+
+/* Topo com verde escuro uniforme */
+.topbar,
+.search-panel{
+  background:#01291c;
+  box-shadow:none;
+}
+.topbar{border-bottom-color:#01291c}
+
+.topbar{border-bottom-color:var(--accent)}
