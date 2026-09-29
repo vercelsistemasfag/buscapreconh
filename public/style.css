@@ -258,3 +258,26 @@ footer small {
     white-space: normal;
   }
 }
+
+/* Imagem do botao de instalacao */
+#install-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:160px;
+  max-width:46%;
+  min-height:44px;
+  padding:0;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  box-shadow:none;
+  cursor:pointer;
+}
+#install-button:hover{background:transparent}
+#install-button img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
