@@ -25,3 +25,27 @@
 /* pesquisa-limpa-v1 */
 .search-order-title{flex:0 0 auto;position:relative;margin:0;width:100%;padding:12px max(16px,calc((100vw - 1088px)/2));background:#fff;color:#193b2d;border-bottom:1px solid #dce6d8;font-size:15px;font-weight:700;line-height:1.3}
 .search-order-title[hidden]{display:none}
+
+/* Titulo da pesquisa em toda a largura */
+.offers-section .section-heading{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  container-type:inline-size;
+}
+.offers-section .section-heading > div{
+  width:100%;
+  min-width:0;
+}
+.offers-section #offers-title{
+  display:block;
+  margin:0;
+  font-size:clamp(10px,3.25cqi,18px);
+  font-weight:800;
+  letter-spacing:0;
+  line-height:1.3;
+  white-space:nowrap;
+}
+.offers-section .result-count{
+  margin-left:auto;
+}
