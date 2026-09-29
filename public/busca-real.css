@@ -40,7 +40,7 @@
 .offers-section #offers-title{
   display:block;
   margin:0;
-  font-size:clamp(10px,3.25cqi,18px);
+  font-size:3.95cqi;
   font-weight:800;
   letter-spacing:0;
   line-height:1.3;
