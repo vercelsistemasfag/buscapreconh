@@ -379,3 +379,16 @@ footer small {
   font-weight:700;
   cursor:pointer;
 }
+
+/* Creditos discretos das marcas */
+footer .store-trademarks{
+  display:block;
+  margin:8px 0 0;
+  max-width:620px;
+  font-size:10px;
+  font-weight:400;
+  line-height:1.5;
+  color:#a9bdb1;
+  text-align:left;
+  white-space:normal;
+}
