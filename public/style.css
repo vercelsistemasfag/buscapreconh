@@ -306,3 +306,11 @@ footer small {
 .topbar{border-bottom-color:#01291c}
 
 .topbar{border-bottom-color:var(--accent)}
+
+/* Fundo uniforme com linha verde clara */
+.topbar,
+.search-panel{
+  background:#01291c;
+  box-shadow:none;
+}
+.topbar{border-bottom:3px solid var(--accent)}
