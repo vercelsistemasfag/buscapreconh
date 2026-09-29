@@ -281,3 +281,18 @@ footer small {
   height:auto;
   object-fit:contain;
 }
+
+/* Botao menor, alinhado a direita */
+#install-button{
+  width:140px;
+  max-width:40%;
+  margin-left:auto;
+}
+.topbar{
+  padding-right:8px;
+}
+
+/* Ocultar no aplicativo instalado */
+@media (display-mode:standalone), (display-mode:fullscreen){
+  #install-button{display:none}
+}
