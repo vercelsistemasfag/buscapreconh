@@ -284,10 +284,34 @@ let installPrompt
 const installButton = document.querySelector('#install-button')
 const toast = document.querySelector('#toast')
 function showToast(message){toast.textContent=message;toast.classList.add('visible');setTimeout(()=>toast.classList.remove('visible'),2800)}
-window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event})
-installButton.addEventListener('click',async()=>{
-  if(!installPrompt){showToast('No Android, abra o menu do navegador e escolha “Instalar aplicativo”.');return}
-  await installPrompt.prompt();installPrompt=null
+installButton.hidden = true
+const installedMode = window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)')
+function isInstalledView(){
+  return installedMode.matches || navigator.standalone === true
+}
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault()
+  installPrompt = event
+  installButton.hidden = isInstalledView()
+})
+installButton.addEventListener('click', async () => {
+  if (!installPrompt || isInstalledView()) return
+  const prompt = installPrompt
+  installPrompt = null
+  installButton.hidden = true
+  try {
+    await prompt.prompt()
+    await prompt.userChoice
+  } catch (error) {
+    console.warn('Instalação indisponível neste momento.', error)
+  }
+})
+window.addEventListener('appinstalled', () => {
+  installPrompt = null
+  installButton.hidden = true
+})
+installedMode.addEventListener('change', () => {
+  installButton.hidden = isInstalledView() || !installPrompt
 })
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))
 render()
