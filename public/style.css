@@ -314,3 +314,68 @@ footer small {
   box-shadow:none;
 }
 .topbar{border-bottom:3px solid var(--accent)}
+
+/* Botoes de instalacao empilhados no cabecalho */
+.install-buttons{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:2px;
+  width:140px;
+  max-width:40%;
+  margin-left:auto;
+  flex-shrink:0;
+}
+.install-buttons #install-button,
+.install-buttons #install-ios-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  max-width:100%;
+  height:47px;
+  min-height:44px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  cursor:pointer;
+}
+.install-buttons img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+#install-buttons[hidden]{display:none!important}
+@media (display-mode:standalone), (display-mode:fullscreen){
+  #install-buttons{display:none!important}
+}
+#install-help{
+  box-sizing:border-box;
+  width:calc(100% - 32px);
+  max-width:420px;
+  max-height:85dvh;
+  overflow:auto;
+  padding:22px;
+  border:0;
+  border-radius:18px;
+  color:#193b2d;
+  background:white;
+}
+#install-help::backdrop{background:#0008}
+#install-help h2{margin:0 0 16px;font-size:20px}
+#install-help ol{padding-left:22px}
+#install-help li{margin-bottom:12px;line-height:1.45}
+#install-help p{font-size:13px;color:#607568}
+#install-help button{
+  width:100%;
+  min-height:44px;
+  border:0;
+  border-radius:10px;
+  color:white;
+  background:#01291c;
+  font-weight:700;
+  cursor:pointer;
+}

@@ -284,35 +284,145 @@ let installPrompt
 const installButton = document.querySelector('#install-button')
 const toast = document.querySelector('#toast')
 function showToast(message){toast.textContent=message;toast.classList.add('visible');setTimeout(()=>toast.classList.remove('visible'),2800)}
-installButton.hidden = true
+
+const installButtons = document.querySelector('#install-buttons')
+const iosButton = document.querySelector('#install-ios-button')
 const installedMode = window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)')
+
 function isInstalledView(){
   return installedMode.matches || navigator.standalone === true
 }
+function updateInstallButtons(){
+  installButtons.hidden = isInstalledView()
+  installButton.hidden = false
+}
+function showInstallHelp(preferIOS = false){
+  const ua = navigator.userAgent
+  const ios = /iPhone|iPad|iPod/i.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const android = /Android/i.test(ua)
+  const embedded = /Instagram|FBAN|FBAV|; wv\)/i.test(ua)
+  let title = 'Adicionar à tela inicial'
+  let steps
+
+  if (ios || (!android && preferIOS)){
+    title = 'Adicionar no iPhone'
+    if (embedded){
+      steps = [
+        'Abra este site no Safari, fora do navegador deste aplicativo.',
+        'No Safari, toque em Compartilhar.',
+        'Escolha Adicionar à Tela de Início. Se necessário, toque em Mais para encontrar a opção.',
+        'Se aparecer Abrir como App da Web, mantenha ativado e toque em Adicionar.'
+      ]
+    } else if (/CriOS/i.test(ua)){
+      steps = [
+        'No Chrome, toque em Compartilhar ao lado da barra de endereço.',
+        'Escolha Adicionar à Tela de Início.',
+        'Confirme em Adicionar.',
+        'Se a opção não aparecer, abra este site no Safari e use Compartilhar → Adicionar à Tela de Início.'
+      ]
+    } else if (/Safari/i.test(ua) && !/FxiOS|EdgiOS|OPiOS/i.test(ua)){
+      steps = [
+        'No Safari, abra Compartilhar; dependendo da versão, essa opção fica no menu Mais.',
+        'Toque em Adicionar à Tela de Início. Se não aparecer, procure na lista de ações ou em Editar Ações.',
+        'Se aparecer Abrir como App da Web, mantenha ativado.',
+        'Toque em Adicionar.'
+      ]
+    } else {
+      steps = [
+        'Abra o menu de compartilhamento deste navegador.',
+        'Se houver Adicionar à Tela de Início, selecione e confirme.',
+        'Se essa opção não existir, abra este site no Safari.',
+        'No Safari, use Compartilhar → Adicionar à Tela de Início → Adicionar.'
+      ]
+    }
+  } else if (android){
+    if (embedded){
+      steps = [
+        'No menu deste aplicativo, escolha Abrir no navegador ou abra este endereço no Chrome.',
+        'No navegador, tente novamente o botão de instalação.',
+        'Se necessário, use o menu do navegador → Adicionar à tela inicial ou Instalar aplicativo.'
+      ]
+    } else if (/SamsungBrowser/i.test(ua)){
+      steps = [
+        'No Samsung Internet, abra o menu.',
+        'Procure Adicionar página a → Tela inicial ou a opção de instalar, se disponível.',
+        'Confirme em Adicionar ou Instalar.'
+      ]
+    } else if (/Firefox/i.test(ua)){
+      steps = [
+        'No Firefox, abra o menu de três pontos.',
+        'Escolha Adicionar à tela inicial ou Instalar, se disponível.',
+        'Confirme a criação do atalho ou a instalação.'
+      ]
+    } else {
+      steps = [
+        'Abra o menu do navegador, geralmente indicado por três pontos.',
+        'Procure Adicionar à tela inicial ou Instalar aplicativo.',
+        'Confirme em Adicionar ou Instalar.',
+        'Se essas opções não existirem, abra este site no Chrome e tente novamente.'
+      ]
+    }
+  } else {
+    steps = [
+      'No celular, abra este site no navegador.',
+      'No Android, use o botão Google Play para instalar ou ver as orientações.',
+      'No iPhone, use o botão App Store para ver as orientações da Tela de Início.'
+    ]
+  }
+
+  let dialog = document.querySelector('#install-help')
+  if (!dialog){
+    dialog = document.createElement('dialog')
+    dialog.id = 'install-help'
+    dialog.setAttribute('aria-labelledby', 'install-help-title')
+    dialog.innerHTML = '<h2 id="install-help-title"></h2><ol></ol><p>A instalação ou o atalho é feito pelo navegador.</p><button type="button">Entendi</button>'
+    document.body.append(dialog)
+    dialog.querySelector('button').addEventListener('click', () => dialog.close())
+    dialog.addEventListener('close', () => dialog.returnFocus?.focus())
+  }
+  dialog.querySelector('h2').textContent = title
+  const list = dialog.querySelector('ol')
+  list.replaceChildren()
+  for (const text of steps){
+    const item = document.createElement('li')
+    item.textContent = text
+    list.append(item)
+  }
+  dialog.returnFocus = document.activeElement
+  if (!dialog.open) dialog.showModal()
+}
+
 window.addEventListener('beforeinstallprompt', event => {
   event.preventDefault()
   installPrompt = event
-  installButton.hidden = isInstalledView()
+  updateInstallButtons()
 })
 installButton.addEventListener('click', async () => {
-  if (!installPrompt || isInstalledView()) return
+  if (isInstalledView()) return
+  if (!installPrompt){
+    showInstallHelp()
+    return
+  }
   const prompt = installPrompt
   installPrompt = null
-  installButton.hidden = true
   try {
     await prompt.prompt()
     await prompt.userChoice
-  } catch (error) {
-    console.warn('Instalação indisponível neste momento.', error)
+  } catch {
+    showInstallHelp()
   }
+})
+iosButton.addEventListener('click', () => {
+  if (!isInstalledView()) showInstallHelp(true)
 })
 window.addEventListener('appinstalled', () => {
   installPrompt = null
-  installButton.hidden = true
+  updateInstallButtons()
 })
-installedMode.addEventListener('change', () => {
-  installButton.hidden = isInstalledView() || !installPrompt
-})
+installedMode.addEventListener('change', updateInstallButtons)
+window.addEventListener('pageshow', updateInstallButtons)
+updateInstallButtons()
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))
 render()
 
